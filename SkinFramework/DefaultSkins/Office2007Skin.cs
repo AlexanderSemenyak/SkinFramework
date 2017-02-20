@@ -1,4 +1,4 @@
-﻿// This file is part of CoderLine SkinFramework.
+// This file is part of CoderLine SkinFramework.
 //
 // CoderLine SkinFramework is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -51,6 +51,8 @@ namespace SkinFramework
         private bool _formIsTextCentered;
 
         protected ResourceManager _currentManager;
+        private Padding _ncPadding;
+
         #endregion
 
         #region Properties
@@ -108,11 +110,11 @@ namespace SkinFramework
             try
             {
                 LoadResourceManager();
-                XmlDocument skinDef = new XmlDocument();
+                var skinDef = new XmlDocument();
                 skinDef.LoadXml(_currentManager.GetString("SkinDefinition"));
 
 
-                XmlElement elm = skinDef.DocumentElement;
+                var elm = skinDef.DocumentElement;
                 XmlNode form = elm["Form"];
                 XmlNode captionNode = form["Caption"];
                 XmlNode normalButton = captionNode["NormalButton"];
@@ -121,9 +123,12 @@ namespace SkinFramework
                 // Background
                 _formBorder = new ControlPaintHelper(PaintHelperData.Read(form["Border"], _currentManager, "FormBorder"));
                 _formCaption = new ControlPaintHelper(PaintHelperData.Read(captionNode["Background"], _currentManager, "FormCaption"));
+                //  calculate NC
+                _ncPadding = new Padding(8, 0, 8, 8);
+
 
                 // Big Buttons
-                Size imageSize = PaintHelperData.StringToSize(normalButton["IconSize"].InnerText);
+                var imageSize = PaintHelperData.StringToSize(normalButton["IconSize"].InnerText);
 
                 _formCloseIcon = new ImageStrip(true, imageSize, (Bitmap)_currentManager.GetObject("CloseIcon"));
                 _formRestoreIcon = new ImageStrip(true, imageSize, (Bitmap)_currentManager.GetObject("RestoreIcon"));
@@ -151,6 +156,10 @@ namespace SkinFramework
                 throw new ApplicationException("Invalid SkinDefinition XML", e);
             }
         }
+
+        public override Padding NCPadding => _ncPadding;
+        public override uint CaptionHeight => 30;
+
 
         /// <summary>
         /// Loads the resource manager assigned to the current <see cref="OfficeStyle"/>.
@@ -182,9 +191,10 @@ namespace SkinFramework
                 return;
 
             // Create a rounded rectangle using Gdi
-            Size cornerSize = new Size(9, 9);
+            var cornerSize = new Size(9, 9);
+            //var hRegion = Win32Api.CreateRectRgn(0, 0, size.Width + 1, size.Height + 1);
             IntPtr hRegion = Win32Api.CreateRoundRectRgn(0, 0, size.Width + 1, size.Height + 1, cornerSize.Width, cornerSize.Height);
-            Region region = Region.FromHrgn(hRegion);
+            var region = Region.FromHrgn(hRegion);
             form.Region = region;
             region.ReleaseHrgn(hRegion);
         }
@@ -200,32 +210,32 @@ namespace SkinFramework
         {
             if (form == null) return false;
 
-            bool isMaximized = form.WindowState == FormWindowState.Maximized;
-            bool isMinimized = form.WindowState == FormWindowState.Minimized;
+            var isMaximized = form.WindowState == FormWindowState.Maximized;
+            var isMinimized = form.WindowState == FormWindowState.Minimized;
 
             // prepare bounds
-            Rectangle windowBounds = paintData.Bounds;
+            var windowBounds = paintData.Bounds;
             windowBounds.Location = Point.Empty;
 
-            Rectangle captionBounds = windowBounds;
-            Size borderSize = paintData.Borders;
-            captionBounds.Height = borderSize.Height + paintData.CaptionHeight;
+            var captionBounds = windowBounds;
+            var borderSize = paintData.Borders;
+            captionBounds.Height = /*borderSize.Height +*/ paintData.CaptionHeight;
 
-            Rectangle textBounds = captionBounds;
-            Rectangle iconBounds = captionBounds;
+            var textBounds = captionBounds;
+            var iconBounds = captionBounds;
             iconBounds.Inflate(-borderSize.Width, 0);
             iconBounds.Y += borderSize.Height;
             iconBounds.Height -= borderSize.Height;
 
             // Draw Caption
-            bool active = paintData.Active;
+            var active = paintData.Active;
             _formCaption.Draw(paintData.Graphics, captionBounds, active ? 0 : 1);
 
             // Paint Icon
             if (paintData.HasMenu && form.Icon != null)
             {
                 iconBounds.Size = paintData.IconSize;
-                Icon tmpIcon = new Icon(form.Icon, paintData.IconSize);
+                var tmpIcon = new Icon(form.Icon, paintData.IconSize);
                 iconBounds.Y = captionBounds.Y + (captionBounds.Height - iconBounds.Height) / 2;
                 paintData.Graphics.DrawIcon(tmpIcon, iconBounds);
                 textBounds.X = iconBounds.Right;
@@ -233,9 +243,9 @@ namespace SkinFramework
             }
 
             // Paint Icons
-            foreach (CaptionButtonPaintData data in paintData.CaptionButtons)
+            foreach (var data in paintData.CaptionButtons)
             {
-                ControlPaintHelper painter = paintData.IsSmallCaption ? _formCaptionButtonSmall : _formCaptionButton;
+                var painter = paintData.IsSmallCaption ? _formCaptionButtonSmall : _formCaptionButton;
 
                 // Get Indices for imagestrip
                 int iconIndex;
@@ -270,7 +280,7 @@ namespace SkinFramework
                     painter.Draw(paintData.Graphics, data.Bounds, backgroundIndex);
 
                 // draw Icon 
-                Rectangle b = data.Bounds;
+                var b = data.Bounds;
                 b.Y += 1;
                 if (iconIndex >= 0)
                     iconStrip.Draw(paintData.Graphics, iconIndex, b, Rectangle.Empty,
@@ -282,16 +292,16 @@ namespace SkinFramework
             // draw text
             if (!string.IsNullOrEmpty(paintData.Text) && !textBounds.IsEmpty)
             {
-                TextFormatFlags flags = TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.PreserveGraphicsClipping;
+                var flags = TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.PreserveGraphicsClipping;
                 if (_formIsTextCentered)
                     flags = flags | TextFormatFlags.HorizontalCenter;
-                Font font = paintData.IsSmallCaption ? SystemFonts.SmallCaptionFont : SystemFonts.CaptionFont;
+                var font = paintData.IsSmallCaption ? SystemFonts.SmallCaptionFont : SystemFonts.CaptionFont;
                 TextRenderer.DrawText(paintData.Graphics, paintData.Text, font, textBounds,
                     paintData.Active ? _formActiveTitleColor : _formInactiveTitleColor, flags);
             }
 
             // exclude caption area from painting
-            Region region = paintData.Graphics.Clip;
+            var region = paintData.Graphics.Clip;
             region.Exclude(captionBounds);
             paintData.Graphics.Clip = region;
 
@@ -300,7 +310,7 @@ namespace SkinFramework
 
             paintData.Graphics.ResetClip();
             return true;
-        } 
+        }
         #endregion
     }
 
