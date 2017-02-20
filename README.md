@@ -1,8 +1,14 @@
-#Introduction 
+#Preface:
+
+As i liked very much how the original author managed to the objective; i've started to add some modifications, due to some NC painting problems in my development machines with Win7/Win8. 
+
+#Introduction: 
 
 ![Screenshot](Images/office07luna.png)
 
 The SkinFramework allows you to add custom Form Borders to your WinForms .NET applications. Didn't you ever want to give your Windows a unique appearance like Microsoft does in their Office Suite (since 2007)?
+
+
 
 # Article
 http://www.codeproject.com/Articles/61485/Winforms-SkinFramework
