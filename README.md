@@ -1,6 +1,3 @@
-﻿#Note
-This project is no longer maintained, feel free to fork and extend it. 
-
 #Introduction 
 
 ![Screenshot](Images/office07luna.png)
