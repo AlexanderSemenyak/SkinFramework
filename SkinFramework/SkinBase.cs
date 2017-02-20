@@ -47,6 +47,10 @@ namespace SkinFramework
 
         #endregion
 
+        public abstract Padding NCPadding { get; }
+
+        public abstract uint CaptionHeight { get; }
+        
         #region Window Skinning
 
         /// <summary>
