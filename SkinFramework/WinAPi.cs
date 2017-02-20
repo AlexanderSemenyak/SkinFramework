@@ -1,4 +1,4 @@
-﻿// This file is part of CoderLine SkinFramework.
+// This file is part of CoderLine SkinFramework.
 //
 // CoderLine SkinFramework is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -30,6 +30,9 @@ namespace SkinFramework.Win32
     {
         #region User32.dll
 
+        [DllImport("user32.dll")]
+        public static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
+
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
 
@@ -60,6 +63,9 @@ namespace SkinFramework.Win32
         #endregion
 
         #region Gdi32.dll
+
+        [DllImport("gdi32.dll")]
+        public static extern IntPtr CreateRectRgn(int nLeftRect, int nTopRect, int nRightRect, int nBottomRect);
 
         [DllImport("gdi32.dll")]
         public static extern int SelectClipRgn(IntPtr hdc, IntPtr hrgn);
@@ -107,13 +113,60 @@ namespace SkinFramework.Win32
         WS_CAPTION = 0x00C00000,
         WS_BORDER = 0x00800000,
     }
-    [Flags]
-    public enum DCXFlags : long
+    //[Flags]
+    //public enum DCXFlags : long
+    //{
+    //    DCXWindow = 0x00000001L,
+    //    DCXCache = 0x00000002L,
+    //    DCXClipsiblings = 0x00000010L,
+    //}
+
+    /// <summary>Values to pass to the GetDCEx method.</summary>
+    [Flags()]
+    public enum DCXFlags : uint
     {
-        DCX_WINDOW = 0x00000001L,
-        DCX_CACHE = 0x00000002L,
-        DCX_CLIPSIBLINGS = 0x00000010L,
+        /// <summary>DCX_WINDOW: Returns a DC that corresponds to the window rectangle rather
+        /// than the client rectangle.</summary>
+        Window = 0x00000001,
+        /// <summary>DCX_CACHE: Returns a DC from the cache, rather than the OWNDC or CLASSDC
+        /// window. Essentially overrides CS_OWNDC and CS_CLASSDC.</summary>
+        Cache = 0x00000002,
+        /// <summary>DCX_NORESETATTRS: Does not reset the attributes of this DC to the
+        /// default attributes when this DC is released.</summary>
+        NoResetAttrs = 0x00000004,
+        /// <summary>DCX_CLIPCHILDREN: Excludes the visible regions of all child windows
+        /// below the window identified by hWnd.</summary>
+        ClipChildren = 0x00000008,
+        /// <summary>DCX_CLIPSIBLINGS: Excludes the visible regions of all sibling windows
+        /// above the window identified by hWnd.</summary>
+        ClipSiblings = 0x00000010,
+        /// <summary>DCX_PARENTCLIP: Uses the visible region of the parent window. The
+        /// parent's WS_CLIPCHILDREN and CS_PARENTDC style bits are ignored. The origin is
+        /// set to the upper-left corner of the window identified by hWnd.</summary>
+        ParentClip = 0x00000020,
+        /// <summary>DCX_EXCLUDERGN: The clipping region identified by hrgnClip is excluded
+        /// from the visible region of the returned DC.</summary>
+        ExcludeRgn = 0x00000040,
+        /// <summary>DCX_INTERSECTRGN: The clipping region identified by hrgnClip is
+        /// intersected with the visible region of the returned DC.</summary>
+        IntersectRgn = 0x00000080,
+        /// <summary>DCX_EXCLUDEUPDATE: Unknown...Undocumented</summary>
+        ExcludeUpdate = 0x00000100,
+        /// <summary>DCX_INTERSECTUPDATE: Unknown...Undocumented</summary>
+        IntersectUpdate = 0x00000200,
+        /// <summary>DCX_LOCKWINDOWUPDATE: Allows drawing even if there is a LockWindowUpdate
+        /// call in effect that would otherwise exclude this window. Used for drawing during
+        /// tracking.</summary>
+        LockWindowUpdate = 0x00000400,
+        /// <summary>DCX_USESTYLE: Undocumented, something related to WM_NCPAINT message.</summary>
+        UseStyle = 0x00010000,
+        /// <summary>DCX_VALIDATE When specified with DCX_INTERSECTUPDATE, causes the DC to
+        /// be completely validated. Using this function with both DCX_INTERSECTUPDATE and
+        /// DCX_VALIDATE is identical to using the BeginPaint function.</summary>
+        Validate = 0x00200000,
     }
+
+
     public enum HitTest
     {
         HTNOWHERE = 0,
