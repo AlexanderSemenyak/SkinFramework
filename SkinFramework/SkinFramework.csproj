@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -167,39 +167,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CloseIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CloseIconSmall.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\FormBorder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\FormCaption.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\FormCaptionButton.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MaximizeIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MaximizeIconSmall.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MinimizeIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MinimizeIconSmall.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RestoreIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RestoreIconSmall.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

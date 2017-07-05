@@ -17,11 +17,12 @@
 /*
  * The Enumerations in this File are stripped down to the values needed in this lib
  */
+
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace SkinFramework.Win32
+namespace SkinFramework
 {
     /// <summary>
     /// This class contains some win32 functions needed for nc drawing

@@ -17,13 +17,12 @@
 
 using System;
 using System.Drawing;
+using System.Resources;
 using System.Windows.Forms;
 using System.Xml;
-using System.Resources;
 using SkinFramework.Painting;
-using SkinFramework.Win32;
 
-namespace SkinFramework
+namespace SkinFramework.DefaultSkins
 {
     public class Office2007Skin : SkinBase
     {

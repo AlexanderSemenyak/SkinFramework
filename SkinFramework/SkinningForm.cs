@@ -22,7 +22,6 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using SkinFramework.Painting;
-using SkinFramework.Win32;
 
 namespace SkinFramework
 {

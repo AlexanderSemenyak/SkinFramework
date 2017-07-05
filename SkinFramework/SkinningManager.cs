@@ -18,6 +18,7 @@ using System;
 using System.ComponentModel.Design;
 using System.ComponentModel;
 using System.Windows.Forms;
+using SkinFramework.DefaultSkins;
 
 namespace SkinFramework
 {

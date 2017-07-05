@@ -16,7 +16,6 @@
 // (C) 2010 Daniel Kuschny, (http://www.coderline.net)
 using System.Drawing;
 using System.ComponentModel;
-using SkinFramework.Win32;
 
 namespace SkinFramework
 {

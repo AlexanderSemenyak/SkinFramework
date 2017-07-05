@@ -21,7 +21,6 @@
  * prevents the access to internal used classes and properties.
  */
 using System.Drawing;
-using SkinFramework.Win32;
 
 namespace SkinFramework.Painting
 {
