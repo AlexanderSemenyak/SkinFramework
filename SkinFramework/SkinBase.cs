@@ -14,6 +14,7 @@
 // along with CoderLine SkinFramework.  If not, see <http://www.gnu.org/licenses/>.
 //
 // (C) 2010 Daniel Kuschny, (http://www.coderline.net)
+
 using System.Drawing;
 using System.Windows.Forms;
 using SkinFramework.Painting;
@@ -21,47 +22,47 @@ using SkinFramework.Painting;
 namespace SkinFramework
 {
     /// <summary>
-    /// Specifies all available default skins.
+    ///     Specifies all available default skins.
     /// </summary>
     public enum DefaultSkin
     {
         Office2007Luna,
         Office2007Obsidian,
-        Office2007Silver,
+        Office2007Silver
     }
 
     /// <summary>
-    /// This is the base class for skins. 
+    ///     This is the base class for skins.
     /// </summary>
     public abstract class SkinBase
     {
+        public abstract Padding NCPadding { get; }
+
+        public abstract uint CaptionHeight { get; }
+
         #region General
 
         /// <summary>
-        /// Called when the skin is loaded.
+        ///     Called when the skin is loaded.
         /// </summary>
         public virtual void OnLoad()
         {
             // Optional Override
-        } 
+        }
 
         #endregion
 
-        public abstract Padding NCPadding { get; }
-
-        public abstract uint CaptionHeight { get; }
-        
         #region Window Skinning
 
         /// <summary>
-        /// Called when the form region needs to be set.
+        ///     Called when the form region needs to be set.
         /// </summary>
         /// <param name="form">The form whose region need to be set.</param>
         /// <param name="size">The size of the form which should be used for region calculation.</param>
         public abstract void OnSetRegion(Form form, Size size);
 
         /// <summary>
-        /// Called when the non client area of the form needs to be painted.
+        ///     Called when the non client area of the form needs to be painted.
         /// </summary>
         /// <param name="form">The form which gets drawn.</param>
         /// <param name="paintData">The paint data to use for drawing.</param>

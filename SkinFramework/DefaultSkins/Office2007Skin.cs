@@ -26,7 +26,27 @@ namespace SkinFramework.DefaultSkins
 {
     public class Office2007Skin : SkinBase
     {
+        #region Constructor
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Office2007Skin" /> class.
+        /// </summary>
+        /// <param name="style">The style.</param>
+        public Office2007Skin(Office2007Style style)
+        {
+            OfficeStyle = style;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public Office2007Style OfficeStyle { get; set; }
+
+        #endregion
+
         #region Fields
+
         private ControlPaintHelper _formCaption;
         private ControlPaintHelper _formBorder;
 
@@ -54,30 +74,17 @@ namespace SkinFramework.DefaultSkins
 
         #endregion
 
-        #region Properties
-        public Office2007Style OfficeStyle { get; set; }
-        #endregion
-
-        #region Constructor
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Office2007Skin"/> class.
-        /// </summary>
-        /// <param name="style">The style.</param>
-        public Office2007Skin(Office2007Style style)
-        {
-            OfficeStyle = style;
-        }
-        #endregion
-
         #region Methods
+
         /// <summary>
-        /// Gets the button paint indices.
+        ///     Gets the button paint indices.
         /// </summary>
         /// <param name="button">The button paint info.</param>
         /// <param name="active">A value indicating whether the button is active.</param>
         /// <param name="buttonIndex">Index of the button icon image strip.</param>
         /// <param name="rendererIndex">Index of the button background image strip.</param>
-        private static void GetButtonData(CaptionButtonPaintData button, bool active, out int buttonIndex, out int rendererIndex)
+        private static void GetButtonData(CaptionButtonPaintData button, bool active, out int buttonIndex,
+            out int rendererIndex)
         {
             if (!button.Enabled)
             {
@@ -102,7 +109,7 @@ namespace SkinFramework.DefaultSkins
         }
 
         /// <summary>
-        /// Called when the skin is loaded.
+        ///     Called when the skin is loaded.
         /// </summary>
         public override void OnLoad()
         {
@@ -120,8 +127,11 @@ namespace SkinFramework.DefaultSkins
                 XmlNode smallButton = captionNode["SmallButton"];
 
                 // Background
-                _formBorder = new ControlPaintHelper(PaintHelperData.Read(form["Border"], _currentManager, "FormBorder"));
-                _formCaption = new ControlPaintHelper(PaintHelperData.Read(captionNode["Background"], _currentManager, "FormCaption"));
+                _formBorder =
+                    new ControlPaintHelper(PaintHelperData.Read(form["Border"], _currentManager, "FormBorder"));
+                _formCaption =
+                    new ControlPaintHelper(PaintHelperData.Read(captionNode["Background"], _currentManager,
+                        "FormCaption"));
                 //  calculate NC
                 _ncPadding = new Padding(8, 0, 8, 8);
 
@@ -133,22 +143,27 @@ namespace SkinFramework.DefaultSkins
                 _formRestoreIcon = new ImageStrip(true, imageSize, (Bitmap)_currentManager.GetObject("RestoreIcon"));
                 _formMaximizeIcon = new ImageStrip(true, imageSize, (Bitmap)_currentManager.GetObject("MaximizeIcon"));
                 _formMinimizeIcon = new ImageStrip(true, imageSize, (Bitmap)_currentManager.GetObject("MinimizeIcon"));
-                _formCaptionButton = new ControlPaintHelper(PaintHelperData.Read(normalButton, _currentManager, "FormCaptionButton"));
+                _formCaptionButton =
+                    new ControlPaintHelper(PaintHelperData.Read(normalButton, _currentManager, "FormCaptionButton"));
 
                 // Small Buttons
                 imageSize = PaintHelperData.StringToSize(smallButton["IconSize"].InnerText);
 
-                _formCloseIconSmall = new ImageStrip(true, imageSize, (Bitmap)_currentManager.GetObject("CloseIconSmall"));
-                _formRestoreIconSmall = new ImageStrip(true, imageSize, (Bitmap)_currentManager.GetObject("RestoreIconSmall"));
-                _formMaximizeIconSmall = new ImageStrip(true, imageSize, (Bitmap)_currentManager.GetObject("MaximizeIconSmall"));
-                _formMinimizeIconSmall = new ImageStrip(true, imageSize, (Bitmap)_currentManager.GetObject("MinimizeIconSmall"));
-                _formCaptionButtonSmall = new ControlPaintHelper(PaintHelperData.Read(smallButton, _currentManager, "FormCaptionButton"));
+                _formCloseIconSmall = new ImageStrip(true, imageSize,
+                    (Bitmap)_currentManager.GetObject("CloseIconSmall"));
+                _formRestoreIconSmall = new ImageStrip(true, imageSize,
+                    (Bitmap)_currentManager.GetObject("RestoreIconSmall"));
+                _formMaximizeIconSmall = new ImageStrip(true, imageSize,
+                    (Bitmap)_currentManager.GetObject("MaximizeIconSmall"));
+                _formMinimizeIconSmall = new ImageStrip(true, imageSize,
+                    (Bitmap)_currentManager.GetObject("MinimizeIconSmall"));
+                _formCaptionButtonSmall =
+                    new ControlPaintHelper(PaintHelperData.Read(smallButton, _currentManager, "FormCaptionButton"));
 
                 // General Infos
                 _formActiveTitleColor = PaintHelperData.StringToColor(form["ActiveCaption"].InnerText);
                 _formInactiveTitleColor = PaintHelperData.StringToColor(form["InactiveCaption"].InnerText);
                 _formIsTextCentered = PaintHelperData.StringToBool(form["CenterCaption"].InnerText);
-
             }
             catch (Exception e)
             {
@@ -161,26 +176,26 @@ namespace SkinFramework.DefaultSkins
 
 
         /// <summary>
-        /// Loads the resource manager assigned to the current <see cref="OfficeStyle"/>.
+        ///     Loads the resource manager assigned to the current <see cref="OfficeStyle" />.
         /// </summary>
         protected virtual void LoadResourceManager()
         {
             switch (OfficeStyle)
             {
                 case Office2007Style.LunaBlue:
-                    _currentManager = DefaultSkins.Office2007Luna.ResourceManager;
+                    _currentManager = Office2007Luna.ResourceManager;
                     break;
                 case Office2007Style.Silver:
-                    _currentManager = DefaultSkins.Office2007Silver.ResourceManager;
+                    _currentManager = Office2007Silver.ResourceManager;
                     break;
                 case Office2007Style.ObsidianBlack:
-                    _currentManager = DefaultSkins.Office2007Obsidian.ResourceManager;
+                    _currentManager = Office2007Obsidian.ResourceManager;
                     break;
             }
         }
 
         /// <summary>
-        /// Called when the form region needs to be set.
+        ///     Called when the form region needs to be set.
         /// </summary>
         /// <param name="form">The form whose region need to be set.</param>
         /// <param name="size">The size of the form which should be used for region calculation.</param>
@@ -192,7 +207,8 @@ namespace SkinFramework.DefaultSkins
             // Create a rounded rectangle using Gdi
             var cornerSize = new Size(9, 9);
             //var hRegion = Win32Api.CreateRectRgn(0, 0, size.Width + 1, size.Height + 1);
-            IntPtr hRegion = Win32Api.CreateRoundRectRgn(0, 0, size.Width + 1, size.Height + 1, cornerSize.Width, cornerSize.Height);
+            var hRegion = Win32Api.CreateRoundRectRgn(0, 0, size.Width + 1, size.Height + 1, cornerSize.Width,
+                cornerSize.Height);
             var region = Region.FromHrgn(hRegion);
             form.Region = region;
             region.ReleaseHrgn(hRegion);
@@ -200,7 +216,7 @@ namespace SkinFramework.DefaultSkins
 
 
         /// <summary>
-        /// Called when the non client area of the form needs to be painted.
+        ///     Called when the non client area of the form needs to be painted.
         /// </summary>
         /// <param name="form">The form which gets drawn.</param>
         /// <param name="paintData">The paint data to use for drawing.</param>
@@ -283,7 +299,7 @@ namespace SkinFramework.DefaultSkins
                 b.Y += 1;
                 if (iconIndex >= 0)
                     iconStrip.Draw(paintData.Graphics, iconIndex, b, Rectangle.Empty,
-                                   DrawingAlign.Center, DrawingAlign.Center);
+                        DrawingAlign.Center, DrawingAlign.Center);
                 // Ensure textbounds
                 textBounds.Width -= data.Bounds.Width;
             }
@@ -291,7 +307,8 @@ namespace SkinFramework.DefaultSkins
             // draw text
             if (!string.IsNullOrEmpty(paintData.Text) && !textBounds.IsEmpty)
             {
-                var flags = TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.PreserveGraphicsClipping;
+                var flags = TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis |
+                            TextFormatFlags.PreserveGraphicsClipping;
                 if (_formIsTextCentered)
                     flags = flags | TextFormatFlags.HorizontalCenter;
                 var font = paintData.IsSmallCaption ? SystemFonts.SmallCaptionFont : SystemFonts.CaptionFont;
@@ -310,26 +327,28 @@ namespace SkinFramework.DefaultSkins
             paintData.Graphics.ResetClip();
             return true;
         }
+
         #endregion
     }
 
     /// <summary>
-    /// Lists all available Office 2007 Color Schemes
+    ///     Lists all available Office 2007 Color Schemes
     /// </summary>
     public enum Office2007Style
     {
         /// <summary>
-        /// The blue color scheme
+        ///     The blue color scheme
         /// </summary>
         LunaBlue,
+
         /// <summary>
-        /// The black color scheme
+        ///     The black color scheme
         /// </summary>
         ObsidianBlack,
+
         /// <summary>
-        /// The silver color scheme
+        ///     The silver color scheme
         /// </summary>
         Silver
     }
-
 }

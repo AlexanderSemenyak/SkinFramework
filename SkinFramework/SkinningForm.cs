@@ -14,6 +14,7 @@
 // along with CoderLine SkinFramework.  If not, see <http://www.gnu.org/licenses/>.
 //
 // (C) 2010 Daniel Kuschny, (http://www.coderline.net)
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,57 +27,54 @@ using SkinFramework.Painting;
 namespace SkinFramework
 {
     /// <summary>
-    /// This NativeWindow implementation processes the window messages
-    /// of a given Form to enable the skinning.
+    ///     This NativeWindow implementation processes the window messages
+    ///     of a given Form to enable the skinning.
     /// </summary>
     public class SkinningForm : NativeWindow
     {
+        #region Properties
+
+        /// <summary>
+        ///     Gets a value indicating whether whe should process the nc area.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if we should process the nc area; otherwise, <c>false</c>.
+        /// </value>
+        private bool IsProcessNcArea => !(_parentForm == null ||
+                                          _parentForm.MdiParent != null &&
+                                          _parentForm.WindowState == FormWindowState.Maximized);
+
+        #endregion
+
         #region Fields
 
         // form data
         private Form _parentForm;
+
         private readonly List<CaptionButton> _captionButtons;
         private bool _formIsActive;
 
         // graphics data
         private readonly BufferedGraphicsContext _bufferContext;
+
         private BufferedGraphics _bufferGraphics;
         private Size _currentCacheSize;
 
         // used for state resetting 
         private CaptionButton _pressedButton;
+
         private CaptionButton _hoveredButton;
 
-        private SkinningManager _manager;
+        private readonly SkinningManager _manager;
 
         private Size _a;
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// Gets a value indicating whether whe should process the nc area.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if we should process the nc area; otherwise, <c>false</c>.
-        /// </value>
-        private bool IsProcessNcArea
-        {
-            get
-            {
-                // check if we should process the nc area
-                return
-                    !(_parentForm == null ||
-                      _parentForm.MdiParent != null && _parentForm.WindowState == FormWindowState.Maximized);
-            }
-        }
-
-        #endregion
-
         #region Constructor and Destructor
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="SkinningForm"/> class.
+        ///     Initializes a new instance of the <see cref="SkinningForm" /> class.
         /// </summary>
         /// <param name="parentForm">The parent form.</param>
         /// <param name="manager">The manager.</param>
@@ -96,19 +94,20 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="SkinningForm"/> is reclaimed by garbage collection.
+        ///     Releases unmanaged resources and performs other cleanup operations before the
+        ///     <see cref="SkinningForm" /> is reclaimed by garbage collection.
         /// </summary>
         ~SkinningForm()
         {
             UnregisterEventHandlers();
         }
+
         #endregion
 
         #region Parent Form Handlers
 
         /// <summary>
-        /// Registers all important eventhandlers.
+        ///     Registers all important eventhandlers.
         /// </summary>
         private void RegisterEventHandlers()
         {
@@ -119,7 +118,7 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Unregisters all important eventhandlers.
+        ///     Unregisters all important eventhandlers.
         /// </summary>
         private void UnregisterEventHandlers()
         {
@@ -130,14 +129,14 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Called when the handle of the parent form is created.
+        ///     Called when the handle of the parent form is created.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void OnHandleCreated(object sender, EventArgs e)
         {
             // this little line allows us to handle the windowMessages of the parent form in this class
-            AssignHandle(((Form)sender).Handle);
+            AssignHandle(((Form) sender).Handle);
             if (IsProcessNcArea)
             {
                 UpdateStyle();
@@ -146,10 +145,10 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Called when the handle of the parent form is destroyed
+        ///     Called when the handle of the parent form is destroyed
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void OnHandleDestroyed(object sender, EventArgs e)
         {
             // release handle as it is destroyed
@@ -157,10 +156,10 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Called when the parent of the parent form is disposed
+        ///     Called when the parent of the parent form is disposed
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void OnParentDisposed(object sender, EventArgs e)
         {
             // unregister events as the parent of the form is disposed
@@ -170,10 +169,10 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Called when the text on the parent form has changed.
+        ///     Called when the text on the parent form has changed.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void OnTextChanged(object sender, EventArgs e)
         {
             // Redraw on title change
@@ -186,15 +185,15 @@ namespace SkinFramework
         #region Skinning Executors
 
         /// <summary>
-        /// Invokes the default window procedure associated with this window.
+        ///     Invokes the default window procedure associated with this window.
         /// </summary>
-        /// <param name="m">A <see cref="T:System.Windows.Forms.Message"/> that is associated with the current Windows message.</param>
+        /// <param name="m">A <see cref="T:System.Windows.Forms.Message" /> that is associated with the current Windows message.</param>
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         protected override void WndProc(ref Message m)
         {
             var supressOriginalMessage = false;
             if (IsProcessNcArea)
-                switch ((Win32Messages)m.Msg)
+                switch ((Win32Messages) m.Msg)
                 {
                     // update form data on style change
                     case Win32Messages.STYLECHANGED:
@@ -203,15 +202,17 @@ namespace SkinFramework
                         break;
 
                     #region Handle Form Activation
+
                     case Win32Messages.ACTIVATEAPP:
                         // redraw
-                        _formIsActive = (int)m.WParam != 0;
+                        _formIsActive = (int) m.WParam != 0;
                         NcPaint(true);
                         break;
 
                     case Win32Messages.ACTIVATE:
                         // Set active state and redraw
-                        _formIsActive = ((int)WAFlags.WA_ACTIVE == (int)m.WParam || (int)WAFlags.WA_CLICKACTIVE == (int)m.WParam);
+                        _formIsActive = (int) WAFlags.WA_ACTIVE == (int) m.WParam ||
+                                        (int) WAFlags.WA_CLICKACTIVE == (int) m.WParam;
                         NcPaint(true);
                         break;
                     case Win32Messages.MDIACTIVATE:
@@ -222,9 +223,11 @@ namespace SkinFramework
                             _formIsActive = true;
                         NcPaint(true);
                         break;
+
                     #endregion
 
                     #region Handle Mouse Processing
+
                     // Set Pressed button on mousedown
                     case Win32Messages.NCLBUTTONDOWN:
                         supressOriginalMessage = OnNcLButtonDown(ref m);
@@ -252,6 +255,7 @@ namespace SkinFramework
                         }
                         NcPaint(true);
                         break;
+
                     #endregion
 
                     #region Size Processing
@@ -270,47 +274,48 @@ namespace SkinFramework
                         break;
                     // update region on resize
                     case Win32Messages.WINDOWPOSCHANGING:
-                        var wndPos = (WINDOWPOS)m.GetLParam(typeof(WINDOWPOS));
-                        if ((wndPos.flags & (int)SWPFlags.SWP_NOSIZE) == 0)
-                        {
+                        var wndPos = (WINDOWPOS) m.GetLParam(typeof(WINDOWPOS));
+                        if ((wndPos.flags & (int) SWPFlags.SWP_NOSIZE) == 0)
                             _manager.CurrentSkin.OnSetRegion(_parentForm, new Size(wndPos.cx, wndPos.cy));
-                        }
                         break;
                     // remove region on maximize or repaint on resize
                     case Win32Messages.WINDOWPOSCHANGED:
                         if (_parentForm.WindowState == FormWindowState.Maximized)
                             _parentForm.Region = null;
 
-                        var wndPos2 = (WINDOWPOS)m.GetLParam(typeof(WINDOWPOS));
-                        if ((wndPos2.flags & (int)SWPFlags.SWP_NOSIZE) == 0)
+                        var wndPos2 = (WINDOWPOS) m.GetLParam(typeof(WINDOWPOS));
+                        if ((wndPos2.flags & (int) SWPFlags.SWP_NOSIZE) == 0)
                         {
                             UpdateCaption();
                             NcPaint(true);
                         }
                         break;
+
                     #endregion
 
                     #region Non Client Area Handling
+
                     // paint the non client area
                     case Win32Messages.NCPAINT:
                         if (NcPaint(true))
                         {
-                            m.Result = (IntPtr)1;
+                            m.Result = (IntPtr) 1;
                             supressOriginalMessage = true;
                         }
                         break;
                     // calculate the non client area size
                     case Win32Messages.NCCALCSIZE:
                         //supressOriginalMessage = true;
-                        if (m.WParam == (IntPtr)1)
+                        if (m.WParam == (IntPtr) 1)
                         {
                             if (_parentForm.MdiParent != null)
                                 break;
                             // add caption height to non client area
-                            var p = (NCCALCSIZE_PARAMS)m.GetLParam(typeof(NCCALCSIZE_PARAMS));
+                            var p = (NCCALCSIZE_PARAMS) m.GetLParam(typeof(NCCALCSIZE_PARAMS));
 
-                            _a.Height = (int)_manager.CurrentSkin.CaptionHeight;// FormExtenders.GetCaptionHeight(_parentForm);
-                            p.rect0.Top += _a.Height+_manager.CurrentSkin.NCPadding.Top;
+                            _a.Height = (int) _manager.CurrentSkin
+                                .CaptionHeight; // FormExtenders.GetCaptionHeight(_parentForm);
+                            p.rect0.Top += _a.Height + _manager.CurrentSkin.NCPadding.Top;
                             p.rect0.Left += _manager.CurrentSkin.NCPadding.Left;
                             p.rect0.Right -= _manager.CurrentSkin.NCPadding.Right;
                             p.rect0.Bottom -= _manager.CurrentSkin.NCPadding.Bottom;
@@ -319,7 +324,7 @@ namespace SkinFramework
                         }
                         else
                         {
-                            var r = (RECT)m.GetLParam(typeof(RECT));
+                            var r = (RECT) m.GetLParam(typeof(RECT));
                         }
                         m.Result = new IntPtr(1);
                         return;
@@ -329,11 +334,14 @@ namespace SkinFramework
                         if (NcHitTest(ref m))
                             supressOriginalMessage = true;
                         break;
+
                     #endregion
+
                     case Win32Messages.NCACTIVATE:
-                        if (_parentForm.FormBorderStyle == FormBorderStyle.Sizable || _parentForm.FormBorderStyle == FormBorderStyle.SizableToolWindow)
+                        if (_parentForm.FormBorderStyle == FormBorderStyle.Sizable ||
+                            _parentForm.FormBorderStyle == FormBorderStyle.SizableToolWindow)
                         {
-                            _formIsActive = ((int)m.WParam == 1);
+                            _formIsActive = (int) m.WParam == 1;
                             if (NcPaint(true))
                             {
                                 supressOriginalMessage = true;
@@ -348,7 +356,7 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Handles the window sizing
+        ///     Handles the window sizing
         /// </summary>
         /// <param name="m">The m.</param>
         private void OnSize(Message m)
@@ -357,15 +365,15 @@ namespace SkinFramework
             // update form styles on maximize/restore
             if (_parentForm.MdiParent != null)
             {
-                if ((int)m.WParam == 0)
+                if ((int) m.WParam == 0)
                     UpdateStyle();
-                if ((int)m.WParam == 2)
+                if ((int) m.WParam == 2)
                     _parentForm.Refresh();
             }
 
             // update region if needed
-            var wasMaxMin = (_parentForm.WindowState == FormWindowState.Maximized ||
-                _parentForm.WindowState == FormWindowState.Minimized);
+            var wasMaxMin = _parentForm.WindowState == FormWindowState.Maximized ||
+                            _parentForm.WindowState == FormWindowState.Minimized;
 
             var rect1 = new RECT();
             Win32Api.GetWindowRect(_parentForm.Handle, ref rect1);
@@ -375,27 +383,26 @@ namespace SkinFramework
             if (wasMaxMin && _parentForm.WindowState == FormWindowState.Normal &&
                 rc.Size == _parentForm.RestoreBounds.Size)
             {
-                _manager.CurrentSkin.OnSetRegion(_parentForm, new Size(rect1.Right - rect1.Left, rect1.Bottom - rect1.Top));
+                _manager.CurrentSkin.OnSetRegion(_parentForm,
+                    new Size(rect1.Right - rect1.Left, rect1.Bottom - rect1.Top));
                 NcPaint(true);
             }
         }
 
         /// <summary>
-        /// Handles the mouse move event on the non client area.
+        ///     Handles the mouse move event on the non client area.
         /// </summary>
         /// <param name="m">The m.</param>
         private void OnNcMouseMove(Message m)
         {
             // Check for hovered and pressed buttons
             if (Control.MouseButtons != MouseButtons.Left)
-            {
                 if (_pressedButton != null)
                 {
                     _pressedButton.Pressed = false;
                     _pressedButton = null;
                 }
-            }
-            var button = CommandButtonByHitTest((HitTest)m.WParam);
+            var button = CommandButtonByHitTest((HitTest) m.WParam);
 
             if (_hoveredButton != button && _hoveredButton != null)
                 _hoveredButton.Hovered = false;
@@ -406,17 +413,19 @@ namespace SkinFramework
                 _hoveredButton = button;
             }
             else
-                _pressedButton.Pressed = (button == _pressedButton);
+            {
+                _pressedButton.Pressed = button == _pressedButton;
+            }
         }
 
         /// <summary>
-        /// Handle a left mouse button down event.
+        ///     Handle a left mouse button down event.
         /// </summary>
         /// <param name="m">The m.</param>
         /// <returns></returns>
         private bool OnNcLButtonDown(ref Message m)
         {
-            var button = CommandButtonByHitTest((HitTest)m.WParam);
+            var button = CommandButtonByHitTest((HitTest) m.WParam);
             if (_pressedButton != button && _pressedButton != null)
                 _pressedButton.Pressed = false;
             if (button != null)
@@ -424,14 +433,14 @@ namespace SkinFramework
             _pressedButton = button;
             if (_pressedButton != null)
             {
-                m.Result = (IntPtr)1;
+                m.Result = (IntPtr) 1;
                 return true;
             }
             return false;
         }
 
         /// <summary>
-        /// Ensure that the window doesn't overlap docked toolbars on desktop (like taskbar)
+        ///     Ensure that the window doesn't overlap docked toolbars on desktop (like taskbar)
         /// </summary>
         /// <param name="m">The message.</param>
         /// <returns></returns>
@@ -439,9 +448,8 @@ namespace SkinFramework
         {
             if (_parentForm.Parent == null)
             {
-                
                 // create minMax info for maximize data
-                var info = (MINMAXINFO)m.GetLParam(typeof(MINMAXINFO));
+                var info = (MINMAXINFO) m.GetLParam(typeof(MINMAXINFO));
                 var rect = Screen.FromHandle(Handle).WorkingArea;
                 rect.Offset(-rect.X, -rect.Y);
 
@@ -473,32 +481,32 @@ namespace SkinFramework
                 // set wished maximize size
                 Marshal.StructureToPtr(info, m.LParam, true);
 
-                m.Result = (IntPtr)0;
+                m.Result = (IntPtr) 0;
                 return true;
             }
             return false;
         }
 
         /// <summary>
-        /// Updates the window style for the parent form.
+        ///     Updates the window style for the parent form.
         /// </summary>
         private void UpdateStyle()
         {
             // remove the border style
             var currentStyle = Win32Api.GetWindowLong(Handle, GWLIndex.GWL_STYLE);
-            if ((currentStyle & (int)(WindowStyles.WS_BORDER)) != 0)
+            if ((currentStyle & (int) WindowStyles.WS_BORDER) != 0)
             {
-                currentStyle &= ~(int)(WindowStyles.WS_BORDER);
+                currentStyle &= ~(int) WindowStyles.WS_BORDER;
                 Win32Api.SetWindowLong(_parentForm.Handle, GWLIndex.GWL_STYLE, currentStyle);
-                Win32Api.SetWindowPos(_parentForm.Handle, (IntPtr)0, -1, -1, -1, -1,
-                                      (int)(SWPFlags.SWP_NOZORDER | SWPFlags.SWP_NOSIZE | SWPFlags.SWP_NOMOVE |
-                                             SWPFlags.SWP_FRAMECHANGED | SWPFlags.SWP_NOREDRAW | SWPFlags.SWP_NOACTIVATE));
+                Win32Api.SetWindowPos(_parentForm.Handle, (IntPtr) 0, -1, -1, -1, -1,
+                    (int) (SWPFlags.SWP_NOZORDER | SWPFlags.SWP_NOSIZE | SWPFlags.SWP_NOMOVE |
+                           SWPFlags.SWP_FRAMECHANGED | SWPFlags.SWP_NOREDRAW | SWPFlags.SWP_NOACTIVATE));
             }
         }
 
 
         /// <summary>
-        /// Updates the caption.
+        ///     Updates the caption.
         /// </summary>
         private void UpdateCaption()
         {
@@ -531,8 +539,9 @@ namespace SkinFramework
             rect.Offset(-rect.Left, -rect.Top);
 
             var captionButtonSize = FormExtenders.GetCaptionButtonSize(_parentForm);
-            var buttonRect = new Rectangle(rect.Right - borderSize.Width - captionButtonSize.Width, rect.Top + borderSize.Height,
-                                    captionButtonSize.Width, captionButtonSize.Height);
+            var buttonRect = new Rectangle(rect.Right - borderSize.Width - captionButtonSize.Width,
+                rect.Top + borderSize.Height,
+                captionButtonSize.Width, captionButtonSize.Height);
 
             foreach (var button in _captionButtons)
             {
@@ -542,10 +551,10 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Called when a property of a CommandButton has changed.
+        ///     Called when a property of a CommandButton has changed.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs" /> instance containing the event data.</param>
         private void OnCommandButtonPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // if a button is hovered or pressed invalidate
@@ -554,7 +563,7 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Gets the command button at the specified position.
+        ///     Gets the command button at the specified position.
         /// </summary>
         /// <param name="point">The position.</param>
         /// <returns>the CaptionButton instance or null if no button was found.</returns>
@@ -566,7 +575,7 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Gets the command button with the specified HitTest.
+        ///     Gets the command button with the specified HitTest.
         /// </summary>
         /// <param name="hitTest">The hitTest.</param>
         /// <returns>the CaptionButton instance or null if no button was found.</returns>
@@ -580,7 +589,7 @@ namespace SkinFramework
 
 
         /// <summary>
-        /// Redraws the non client area..
+        ///     Redraws the non client area..
         /// </summary>
         public void Invalidate()
         {
@@ -589,7 +598,7 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Redraws the non client area.
+        ///     Redraws the non client area.
         /// </summary>
         /// <param name="invalidateBuffer">if set to <c>true</c> the buffer is invalidated.</param>
         /// <returns>true if the original painting should be suppressed otherwise false.</returns>
@@ -599,10 +608,10 @@ namespace SkinFramework
                 return false;
             var result = false;
 
-            var hdc = (IntPtr)0;
+            var hdc = (IntPtr) 0;
             Graphics g = null;
             Region region = null;
-            var hrgn = (IntPtr)0;
+            var hrgn = (IntPtr) 0;
 
             try
             {
@@ -615,7 +624,8 @@ namespace SkinFramework
 
                 // prepare image bounds
                 var borderSize = FormExtenders.GetBorderSize(_parentForm);
-                var captionHeight = (int)_manager.CurrentSkin.CaptionHeight;//()!=null FormExtenders.GetCaptionHeight(_parentForm);
+                var captionHeight =
+                    (int) _manager.CurrentSkin.CaptionHeight; //()!=null FormExtenders.GetCaptionHeight(_parentForm);
 
                 var rectScreen = new RECT();
                 Win32Api.GetWindowRect(_parentForm.Handle, ref rectScreen);
@@ -624,8 +634,8 @@ namespace SkinFramework
                 rectBounds.Offset(-rectBounds.X, -rectBounds.Y);
 
                 // create graphics handle
-                hdc = Win32Api.GetDCEx(_parentForm.Handle, (IntPtr)0,
-                    (DCXFlags.Cache | DCXFlags.ClipSiblings | DCXFlags.Window));
+                hdc = Win32Api.GetDCEx(_parentForm.Handle, (IntPtr) 0,
+                    DCXFlags.Cache | DCXFlags.ClipSiblings | DCXFlags.Window);
                 g = Graphics.FromHdc(hdc);
 
                 // prepare clipping
@@ -633,8 +643,8 @@ namespace SkinFramework
                 region = new Region(rectClip);
                 rectClip.X = _manager.CurrentSkin.NCPadding.Left;
                 rectClip.Y = _manager.CurrentSkin.NCPadding.Top + captionHeight;
-                rectClip.Width -= rectClip.X+_manager.CurrentSkin.NCPadding.Right;
-                rectClip.Height -= (rectClip.Y + _manager.CurrentSkin.NCPadding.Bottom);
+                rectClip.Width -= rectClip.X + _manager.CurrentSkin.NCPadding.Right;
+                rectClip.Height -= rectClip.Y + _manager.CurrentSkin.NCPadding.Bottom;
 
                 //rectClip.Inflate(-2, 0);//-borderSize.Width, -borderSize.Height);
 
@@ -653,7 +663,7 @@ namespace SkinFramework
                         _bufferGraphics.Dispose();
 
                     _bufferGraphics = _bufferContext.Allocate(g, new Rectangle(0, 0,
-                                rectBounds.Width, rectBounds.Height));
+                        rectBounds.Width, rectBounds.Height));
                     _currentCacheSize = rectBounds.Size;
                     invalidateBuffer = true;
                 }
@@ -701,20 +711,20 @@ namespace SkinFramework
                 _bufferGraphics?.Render(g);
 
                 result = true;
-
             }
             catch (Exception)
-            {// error drawing
+            {
+// error drawing
                 result = false;
             }
 
             // cleanup data
-            if (hdc != (IntPtr)0)
+            if (hdc != (IntPtr) 0)
             {
-                Win32Api.SelectClipRgn(hdc, (IntPtr)0);
+                Win32Api.SelectClipRgn(hdc, (IntPtr) 0);
                 Win32Api.ReleaseDC(_parentForm.Handle, hdc);
             }
-            if (region != null && hrgn != (IntPtr)0)
+            if (region != null && hrgn != (IntPtr) 0)
                 region.ReleaseHrgn(hrgn);
 
             region?.Dispose();
@@ -725,7 +735,7 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Performs the non client HitTest
+        ///     Performs the non client HitTest
         /// </summary>
         /// <param name="m">The Message</param>
         /// <returns>true if the orginal handler should be suppressed otherwise false.</returns>
@@ -750,11 +760,11 @@ namespace SkinFramework
 
                 var rectCaption = rect;
                 rectCaption.Inflate(borderSize.Width, borderSize.Height);
-                rectCaption.Height = _a.Height;//FormExtenders.GetCaptionHeight(_parentForm);
+                rectCaption.Height = _a.Height; //FormExtenders.GetCaptionHeight(_parentForm);
                 // not in caption -> client
                 if (!rectCaption.Contains(point))
                 {
-                    m.Result = (IntPtr)(int)HitTest.HTCLIENT;
+                    m.Result = (IntPtr) (int) HitTest.HTCLIENT;
                     return true;
                 }
 
@@ -765,7 +775,7 @@ namespace SkinFramework
                     rectSysMenu.Size = SystemInformation.SmallIconSize;
                     if (rectSysMenu.Contains(point))
                     {
-                        m.Result = (IntPtr)(int)HitTest.HTSYSMENU;
+                        m.Result = (IntPtr) (int) HitTest.HTSYSMENU;
                         return true;
                     }
                 }
@@ -775,20 +785,20 @@ namespace SkinFramework
                 var sysButton = CommandButtonFromPoint(pt);
                 if (sysButton != null)
                 {
-                    m.Result = (IntPtr)sysButton.HitTest;
+                    m.Result = (IntPtr) sysButton.HitTest;
                     return true;
                 }
 
                 // on Caption?
-                m.Result = (IntPtr)(int)HitTest.HTCAPTION;
+                m.Result = (IntPtr) (int) HitTest.HTCAPTION;
                 return true;
             }
-            m.Result = (IntPtr)(int)HitTest.HTNOWHERE;
+            m.Result = (IntPtr) (int) HitTest.HTNOWHERE;
             return true;
         }
 
         /// <summary>
-        /// Handles the left button up message
+        ///     Handles the left button up message
         /// </summary>
         /// <param name="m">The message</param>
         /// <returns></returns>
@@ -801,12 +811,11 @@ namespace SkinFramework
             if (_pressedButton != null)
             {
                 // get button at wparam
-                var button = CommandButtonByHitTest((HitTest)m.WParam);
+                var button = CommandButtonByHitTest((HitTest) m.WParam);
                 if (button == null)
                     return false;
 
                 if (button.Pressed)
-                {
                     switch (button.HitTest)
                     {
                         case HitTest.HTCLOSE:
@@ -826,12 +835,10 @@ namespace SkinFramework
                             break;
                         case HitTest.HTMINBUTTON:
                             _parentForm.WindowState = _parentForm.WindowState == FormWindowState.Minimized
-                                                          ? FormWindowState.Normal
-                                                          : FormWindowState.Minimized;
+                                ? FormWindowState.Normal
+                                : FormWindowState.Minimized;
                             break;
-
                     }
-                }
 
                 _pressedButton.Pressed = false;
                 _pressedButton.Hovered = false;
@@ -839,6 +846,7 @@ namespace SkinFramework
             }
             return false;
         }
+
         #endregion
     }
 }

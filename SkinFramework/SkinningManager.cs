@@ -14,63 +14,95 @@
 // along with CoderLine SkinFramework.  If not, see <http://www.gnu.org/licenses/>.
 //
 // (C) 2010 Daniel Kuschny, (http://www.coderline.net)
+
 using System;
-using System.ComponentModel.Design;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 using SkinFramework.DefaultSkins;
 
 namespace SkinFramework
 {
     /// <summary>
-    /// This component provides the functionality for skinning a form.
+    ///     This component provides the functionality for skinning a form.
     /// </summary>
     /// <remarks>
-    /// Add this component to your form and assign it to the <see cref="ParentForm"/> Property.
+    ///     Add this component to your form and assign it to the <see cref="ParentForm" /> Property.
     /// </remarks>
     public class SkinningManager : Component
     {
-        private DefaultSkin _defaultSkin;
-        private Form _parentForm;
-        private SkinningForm _form;
         private SkinBase _currentSkin;
+        private DefaultSkin _defaultSkin;
+        private SkinningForm _form;
+        private Form _parentForm;
 
         /// <summary>
-        /// Gets or sets the default skin to load on startup.
+        ///     Gets or sets the default skin to load on startup.
         /// </summary>
         /// <value>The current default style.</value>
         [Category("Appearance")]
         [Description("Gets or sets the default skin to load on startup")]
         public DefaultSkin DefaultSkin
         {
-            get { return _defaultSkin; }
+            get => _defaultSkin;
             set
             {
-                if(_defaultSkin == value) return;
+                if (_defaultSkin == value) return;
                 _defaultSkin = value;
                 LoadDefaultSkin(_defaultSkin);
-                if(_form != null)
+                if (_form != null)
                     _form.Invalidate();
             }
         }
 
         /// <summary>
-        /// Gets the current skin.
+        ///     Gets the current skin.
         /// </summary>
         /// <value>The current skin.</value>
-        public SkinBase CurrentSkin
+        public SkinBase CurrentSkin => _currentSkin ?? LoadDefaultSkin();
+
+        /// <summary>
+        ///     Gets or sets the parent form which should be skinned.
+        /// </summary>
+        /// <value>The parent form.</value>
+        [Category("Behavior")]
+        [Description("Gets or sets the parent form which should be skinned")]
+        public Form ParentForm
         {
-            get
+            get => _parentForm;
+            set
             {
-                return _currentSkin ?? LoadDefaultSkin();
+                if (_parentForm == value) return;
+                if (_parentForm != null && !DesignMode)
+                    _parentForm.Disposed -= OnParentFormDisposed;
+                _parentForm = value;
+                // Start skinning 
+                if (_parentForm != null && !DesignMode)
+                {
+                    _form = new SkinningForm(_parentForm, this);
+                    _parentForm.Disposed += OnParentFormDisposed;
+                }
             }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether we are currently in design mode.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this we are in design mode; otherwise, <c>false</c>.
+        /// </value>
+        internal static bool IsDesignMode { get; set; }
+
+        private void OnParentFormDisposed(object sender, EventArgs e)
+        {
+            Dispose();
         }
 
 
         #region DefaultSkin Loaders
 
         /// <summary>
-        /// Loads a default skin.
+        ///     Loads a default skin.
         /// </summary>
         /// <param name="skin">The skin to load.</param>
         public void LoadDefaultSkin(DefaultSkin skin)
@@ -82,7 +114,7 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Loads a skin implementation
+        ///     Loads a skin implementation
         /// </summary>
         /// <param name="skin">The skin.</param>
         public void LoadSkin(SkinBase skin)
@@ -92,7 +124,7 @@ namespace SkinFramework
         }
 
         /// <summary>
-        /// Loads the default skin.
+        ///     Loads the default skin.
         /// </summary>
         /// <returns></returns>
         private SkinBase LoadDefaultSkin()
@@ -117,49 +149,10 @@ namespace SkinFramework
         }
 
         #endregion
-
-        /// <summary>
-        /// Gets or sets the parent form which should be skinned.
-        /// </summary>
-        /// <value>The parent form.</value>
-        [Category("Behavior")]
-        [Description("Gets or sets the parent form which should be skinned")]
-        public Form ParentForm
-        {
-            get { return _parentForm; }
-            set
-            {
-                if(_parentForm == value) return;
-                if(_parentForm != null && !DesignMode)
-                {
-                    _parentForm.Disposed -= OnParentFormDisposed;
-                }
-                _parentForm = value;
-                // Start skinning 
-                if (_parentForm != null && !DesignMode)
-                {
-                    _form = new SkinningForm(_parentForm, this);
-                    _parentForm.Disposed += OnParentFormDisposed;
-                }
-            }
-        }
-
-        private void OnParentFormDisposed(object sender, EventArgs e)
-        {
-            Dispose();
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether we are currently in design mode.
-        /// </summary>
-        /// <value>
-        /// 	<c>true</c> if this we are in design mode; otherwise, <c>false</c>.
-        /// </value>
-        internal static bool IsDesignMode { get; set; }
     }
 
     /// <summary>
-    /// This designer is used to determine the design mode state
+    ///     This designer is used to determine the design mode state
     /// </summary>
     internal class SkinningManagerDesigner : ComponentDesigner
     {

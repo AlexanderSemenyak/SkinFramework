@@ -14,19 +14,19 @@
 // along with CoderLine SkinFramework.  If not, see <http://www.gnu.org/licenses/>.
 //
 // (C) 2010 Daniel Kuschny, (http://www.coderline.net)
+
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace SkinFramework.Test
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
+        ///     Der Haupteinstiegspunkt für die Anwendung.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

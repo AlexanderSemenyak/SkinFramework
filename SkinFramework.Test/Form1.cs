@@ -14,6 +14,7 @@
 // along with CoderLine SkinFramework.  If not, see <http://www.gnu.org/licenses/>.
 //
 // (C) 2010 Daniel Kuschny, (http://www.coderline.net)
+
 using System;
 using System.Windows.Forms;
 
@@ -28,7 +29,7 @@ namespace SkinFramework.Test
 
         private void radSilver_CheckedChanged(object sender, EventArgs e)
         {
-            DefaultSkin skin = DefaultSkin.Office2007Luna;
+            var skin = DefaultSkin.Office2007Luna;
             if (sender == radLuna && radLuna.Checked)
                 skin = DefaultSkin.Office2007Luna;
             else if (sender == radSilver && radSilver.Checked)
@@ -38,6 +39,5 @@ namespace SkinFramework.Test
 
             skinningManager1.DefaultSkin = skin;
         }
-
     }
 }

@@ -21,31 +21,34 @@ using System.Drawing;
 namespace SkinFramework.Painting
 {
     /// <summary>
-    /// Lists all alignments
+    ///     Lists all alignments
     /// </summary>
     internal enum DrawingAlign
     {
         /// <summary>
-        /// Left if horizontal, Top if vertical
+        ///     Left if horizontal, Top if vertical
         /// </summary>
         Near,
+
         /// <summary>
-        /// Centered
+        ///     Centered
         /// </summary>
         Center,
+
         /// <summary>
-        /// Right if horizontal, Bottom if horizontal
+        ///     Right if horizontal, Bottom if horizontal
         /// </summary>
         Far,
+
         /// <summary>
-        /// Stretch to width / height
+        ///     Stretch to width / height
         /// </summary>
         Stretch
     }
 
 
     /// <summary>
-    /// This class contains all data for painting an image strip.
+    ///     This class contains all data for painting an image strip.
     /// </summary>
     internal class ImageStrip : IDisposable
     {
@@ -59,15 +62,12 @@ namespace SkinFramework.Painting
         #region Properties
 
         /// <summary>
-        /// Gets or sets the image which contains the full image strip..
+        ///     Gets or sets the image which contains the full image strip..
         /// </summary>
         /// <value>The image which contains the full image strip.</value>
         public Bitmap Image
         {
-            get
-            {
-                return _bitmap;
-            }
+            get => _bitmap;
             set
             {
                 if (value == _bitmap) return;
@@ -79,15 +79,12 @@ namespace SkinFramework.Painting
         }
 
         /// <summary>
-        /// Gets or sets the size of the single images in the image strip.
+        ///     Gets or sets the size of the single images in the image strip.
         /// </summary>
         /// <value>The size of images in the image strip.</value>
         public Size ImageSize
         {
-            get
-            {
-                return _imageSize;
-            }
+            get => _imageSize;
             set
             {
                 if (value == _imageSize) return;
@@ -97,7 +94,7 @@ namespace SkinFramework.Painting
 
 
         /// <summary>
-        /// Gets or sets a value indicating whether the images in the image strip are aligned vertical.
+        ///     Gets or sets a value indicating whether the images in the image strip are aligned vertical.
         /// </summary>
         /// <value><c>true</c> if the images in the image strip are aligned vertical; otherwise, <c>false</c>.</value>
         public bool Vertical { get; set; }
@@ -107,7 +104,7 @@ namespace SkinFramework.Painting
         #region Constructor & Destructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ImageStrip"/> class.
+        ///     Initializes a new instance of the <see cref="ImageStrip" /> class.
         /// </summary>
         public ImageStrip()
         {
@@ -123,7 +120,7 @@ namespace SkinFramework.Painting
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
         {
@@ -133,11 +130,13 @@ namespace SkinFramework.Painting
                 _bitmap = null;
             }
         }
+
         #endregion
 
         #region Paint Methods
+
         /// <summary>
-        /// Draws a part of the image at the specified index into the given destination.
+        ///     Draws a part of the image at the specified index into the given destination.
         /// </summary>
         /// <param name="g">The graphics to draw into.</param>
         /// <param name="index">The index of the image to draw.</param>
@@ -148,17 +147,17 @@ namespace SkinFramework.Painting
             Rectangle srcRect;
             if (Vertical)
                 srcRect = new Rectangle(partRect.Left, index * ImageSize.Height + partRect.Top,
-                                        partRect.Width, partRect.Height);
+                    partRect.Width, partRect.Height);
             else
                 srcRect = new Rectangle(index * ImageSize.Width + partRect.Left, partRect.Top,
-                                        partRect.Width, partRect.Height);
+                    partRect.Width, partRect.Height);
 
             g.DrawImage(_bitmap, destRect, srcRect, GraphicsUnit.Pixel);
         }
 
         /// <summary>
-        /// Draws the image using the specified data and alignes the image using the 
-        /// specified alignments within the specified bounds. 
+        ///     Draws the image using the specified data and alignes the image using the
+        ///     specified alignments within the specified bounds.
         /// </summary>
         /// <param name="g">The graphics to draw into.</param>
         /// <param name="index">The index of the image to draw.</param>
@@ -176,12 +175,12 @@ namespace SkinFramework.Painting
             if (srcRect.IsEmpty)
                 return;
 
-            Rectangle dest = destRect;
+            var dest = destRect;
 
             // If no stretching adjust destination bounds
             if (vertical != DrawingAlign.Stretch)
             {
-                bool update = true;
+                var update = true;
 
                 switch (vertical)
                 {
@@ -206,7 +205,7 @@ namespace SkinFramework.Painting
                 // atjust rectangle
                 if (update)
                 {
-                    Rectangle rt = dest;
+                    var rt = dest;
                     dest.Intersect(destRect);
 
                     if (dest.Height > 0 && dest.Height != srcRect.Height)
@@ -221,7 +220,7 @@ namespace SkinFramework.Painting
             // Calculate real destination bounds if no stretching
             if (horizontal != DrawingAlign.Stretch)
             {
-                bool update = true;
+                var update = true;
 
                 switch (horizontal)
                 {
@@ -247,7 +246,7 @@ namespace SkinFramework.Painting
                 // Adjust rectangles
                 if (update)
                 {
-                    Rectangle rt = dest;
+                    var rt = dest;
                     dest.Intersect(destRect);
 
                     if (dest.Width > 0 && dest.Width != srcRect.Width)
@@ -262,6 +261,7 @@ namespace SkinFramework.Painting
             if (!srcRect.IsEmpty && !dest.IsEmpty)
                 Draw(g, index, dest, srcRect);
         }
+
         #endregion
     }
 }

@@ -24,7 +24,7 @@ using System.Xml;
 namespace SkinFramework.Painting
 {
     /// <summary>
-    /// This class handles the loading of resources and drawing of all controls.
+    ///     This class handles the loading of resources and drawing of all controls.
     /// </summary>
     internal class ControlPaintHelper
     {
@@ -34,13 +34,10 @@ namespace SkinFramework.Painting
 
         #endregion
 
-        #region Properties
-        public ImageStrip Images { get; private set; }
-        #endregion
-
         #region Constructor
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="ControlPaintHelper"/> class.
+        ///     Initializes a new instance of the <see cref="ControlPaintHelper" /> class.
         /// </summary>
         /// <param name="data">The data container for this ControlPaintHelper.</param>
         public ControlPaintHelper(PaintHelperData data)
@@ -52,18 +49,26 @@ namespace SkinFramework.Painting
 
             if (!_data.ContentBounds.IsEmpty) return;
 
-            Rectangle rect = new Rectangle(Point.Empty, _data.ImageSize);
+            var rect = new Rectangle(Point.Empty, _data.ImageSize);
             rect.X += _data.ImagePadding.Left;
             rect.Y += _data.ImagePadding.Top;
             rect.Width -= _data.ImagePadding.Horizontal;
             rect.Height -= _data.ImagePadding.Vertical;
             _data.ContentBounds = rect;
         }
+
+        #endregion
+
+        #region Properties
+
+        public ImageStrip Images { get; }
+
         #endregion
 
         #region Paint Methods
+
         /// <summary>
-        /// Draws the control.
+        ///     Draws the control.
         /// </summary>
         /// <param name="g">The graphics to draw into.</param>
         /// <param name="rect">The target bounds.</param>
@@ -71,7 +76,7 @@ namespace SkinFramework.Painting
         public void Draw(Graphics g, Rectangle rect, int index)
         {
             // calculate Bounds for contents
-            Rectangle contentRect = rect;
+            var contentRect = rect;
             contentRect.X += _data.ImagePadding.Left;
             contentRect.Y += _data.ImagePadding.Top;
             contentRect.Width -= _data.ImagePadding.Horizontal;
@@ -82,7 +87,7 @@ namespace SkinFramework.Painting
         }
 
         /// <summary>
-        /// Draws the contents .
+        ///     Draws the contents .
         /// </summary>
         /// <param name="g">The graphics to draw into.</param>
         /// <param name="rectContent">The content bounds.</param>
@@ -92,13 +97,13 @@ namespace SkinFramework.Painting
             if (_data.ContentBounds.IsEmpty)
                 return;
 
-            Rectangle rectImage = _data.ContentBounds;
+            var rectImage = _data.ContentBounds;
             Images.Draw(g, index, rectContent, rectImage, DrawingAlign.Stretch, DrawingAlign.Stretch);
         }
 
 
         /// <summary>
-        /// Draws the a frame with 4 corners and 4 sides . (3x3 matrix) using the specified data.
+        ///     Draws the a frame with 4 corners and 4 sides . (3x3 matrix) using the specified data.
         /// </summary>
         /// <param name="g">The graphics to draw into.</param>
         /// <param name="bounds">The bounds to draw into.</param>
@@ -106,12 +111,12 @@ namespace SkinFramework.Painting
         public void DrawFrame(Graphics g, Rectangle bounds, int index)
         {
             // The bounds of the image to use
-            Rectangle rectImage = new Rectangle(Point.Empty, _data.ImageSize);
+            var rectImage = new Rectangle(Point.Empty, _data.ImageSize);
 
             // The Bounds to draw into
-            Rectangle targetBounds = bounds;
+            var targetBounds = bounds;
 
-            Padding padding = _data.ImagePadding;
+            var padding = _data.ImagePadding;
 
             targetBounds.X += padding.Left;
             targetBounds.Y += padding.Top;
@@ -128,7 +133,7 @@ namespace SkinFramework.Painting
         }
 
         private void DrawSides(Graphics g, int index, Rectangle bounds, Rectangle rectImage,
-                            Rectangle targetBounds, Padding padSides, Padding padCorners)
+            Rectangle targetBounds, Padding padSides, Padding padCorners)
         {
             // left and right side needed?
             if (targetBounds.Height > 0)
@@ -138,21 +143,21 @@ namespace SkinFramework.Painting
                 // Vertical: stretch
                 if (padSides.Left > 0)
                     Images.Draw(g, index,
-                                 new Rectangle(bounds.X, targetBounds.Y, padSides.Left, targetBounds.Height),
-                                 new Rectangle(rectImage.Left, rectImage.Top + padCorners.Top,
-                                               padSides.Left, rectImage.Height - padCorners.Bottom - padCorners.Top),
-                                 DrawingAlign.Near, DrawingAlign.Stretch);
+                        new Rectangle(bounds.X, targetBounds.Y, padSides.Left, targetBounds.Height),
+                        new Rectangle(rectImage.Left, rectImage.Top + padCorners.Top,
+                            padSides.Left, rectImage.Height - padCorners.Bottom - padCorners.Top),
+                        DrawingAlign.Near, DrawingAlign.Stretch);
 
                 // the subimage for the right side.
                 // Horizontal: Right
                 // Vertical: stretch
                 if (padSides.Right > 0)
                     Images.Draw(g, index,
-                                 new Rectangle(bounds.Right - padSides.Right, targetBounds.Y, padSides.Right,
-                                               targetBounds.Height),
-                                 new Rectangle(rectImage.Right - padSides.Right, rectImage.Y + padCorners.Top,
-                                               padSides.Right, rectImage.Height - padCorners.Bottom - padCorners.Top),
-                                 DrawingAlign.Far, DrawingAlign.Stretch);
+                        new Rectangle(bounds.Right - padSides.Right, targetBounds.Y, padSides.Right,
+                            targetBounds.Height),
+                        new Rectangle(rectImage.Right - padSides.Right, rectImage.Y + padCorners.Top,
+                            padSides.Right, rectImage.Height - padCorners.Bottom - padCorners.Top),
+                        DrawingAlign.Far, DrawingAlign.Stretch);
             }
 
             // top and bottom side needed?
@@ -163,23 +168,21 @@ namespace SkinFramework.Painting
                 // Vertical: top
                 if (padSides.Top > 0)
                     Images.Draw(g, index,
-                                 new Rectangle(targetBounds.X, bounds.Top, targetBounds.Width, padSides.Top),
-                                 new Rectangle(rectImage.X + padCorners.Left, rectImage.Top,
-                                               rectImage.Width - padCorners.Right - padCorners.Left, padSides.Top),
-                                 DrawingAlign.Stretch, DrawingAlign.Near);
+                        new Rectangle(targetBounds.X, bounds.Top, targetBounds.Width, padSides.Top),
+                        new Rectangle(rectImage.X + padCorners.Left, rectImage.Top,
+                            rectImage.Width - padCorners.Right - padCorners.Left, padSides.Top),
+                        DrawingAlign.Stretch, DrawingAlign.Near);
 
                 // the subimage for the bottom side.
                 // Horizontal: stretch
                 // Vertical: bottom
                 if (padSides.Bottom > 0)
-                {
                     Images.Draw(g, index,
-                                 new Rectangle(targetBounds.X, bounds.Bottom - padSides.Bottom, targetBounds.Width,
-                                               padSides.Bottom),
-                                 new Rectangle(rectImage.Left + padCorners.Left, rectImage.Bottom - padSides.Bottom,
-                                               rectImage.Width - padCorners.Right - padCorners.Left, padSides.Bottom),
-                                 DrawingAlign.Stretch, DrawingAlign.Far);
-                }
+                        new Rectangle(targetBounds.X, bounds.Bottom - padSides.Bottom, targetBounds.Width,
+                            padSides.Bottom),
+                        new Rectangle(rectImage.Left + padCorners.Left, rectImage.Bottom - padSides.Bottom,
+                            rectImage.Width - padCorners.Right - padCorners.Left, padSides.Bottom),
+                        DrawingAlign.Stretch, DrawingAlign.Far);
             }
         }
 
@@ -188,75 +191,78 @@ namespace SkinFramework.Painting
             // Top Left
             if (padCorners.Left > 0 && padCorners.Top > 0)
                 Images.Draw(g, index, bounds,
-                             new Rectangle(rectImage.Left, rectImage.Top, padCorners.Left, padCorners.Top),
-                             DrawingAlign.Near, DrawingAlign.Near);
+                    new Rectangle(rectImage.Left, rectImage.Top, padCorners.Left, padCorners.Top),
+                    DrawingAlign.Near, DrawingAlign.Near);
 
             // Top Right
             if (padCorners.Right > 0 && padCorners.Top > 0)
                 Images.Draw(g, index, bounds,
-                            new Rectangle(rectImage.Right - padCorners.Right, rectImage.Top, padCorners.Right, padCorners.Top),
-                            DrawingAlign.Far, DrawingAlign.Near);
+                    new Rectangle(rectImage.Right - padCorners.Right, rectImage.Top, padCorners.Right, padCorners.Top),
+                    DrawingAlign.Far, DrawingAlign.Near);
 
             // Bottom Left
             if (padCorners.Left > 0 && padCorners.Bottom > 0)
                 Images.Draw(g, index, bounds,
-                            new Rectangle(rectImage.Left, rectImage.Bottom - padCorners.Bottom, padCorners.Left, padCorners.Bottom),
-                            DrawingAlign.Near, DrawingAlign.Far);
+                    new Rectangle(rectImage.Left, rectImage.Bottom - padCorners.Bottom, padCorners.Left,
+                        padCorners.Bottom),
+                    DrawingAlign.Near, DrawingAlign.Far);
 
             // Bottom Right
             if (padCorners.Right > 0 && padCorners.Bottom > 0)
                 Images.Draw(g, index, bounds,
-                            new Rectangle(rectImage.Right - padCorners.Right, rectImage.Bottom - padCorners.Bottom, padCorners.Right, padCorners.Bottom),
-                            DrawingAlign.Far, DrawingAlign.Far);
+                    new Rectangle(rectImage.Right - padCorners.Right, rectImage.Bottom - padCorners.Bottom,
+                        padCorners.Right, padCorners.Bottom),
+                    DrawingAlign.Far, DrawingAlign.Far);
         }
+
         #endregion
     }
 
     /// <summary>
-    /// This wrapper contains all information for painting a component
+    ///     This wrapper contains all information for painting a component
     /// </summary>
     public class PaintHelperData
     {
         /// <summary>
-        /// Gets or sets the image strip image used for painting.
-        /// </summary>
-        /// <value>The image strip image.</value>
-        public Bitmap Image { get; set; }
-
-        /// <summary>
-        /// Gets or sets the size of one single image in the image strip.
-        /// </summary>
-        /// <value>The size of the image.</value>
-        public Size ImageSize { get; set; }
-
-        /// <summary>
-        /// Gets or sets the padding indicating the border size.
-        /// </summary>
-        /// <value>The sides.</value>
-        public Padding ImagePadding { get; set; }
-
-        /// <summary>
-        /// Gets or sets the bounds of the content section.
-        /// </summary>
-        /// <remarks>
-        /// This placeholder is used later to calculate the content bounds. 
-        /// </remarks>
-        /// <value>The content bounds.</value>
-        public Rectangle ContentBounds { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PaintHelperData"/> class.
+        ///     Initializes a new instance of the <see cref="PaintHelperData" /> class.
         /// </summary>
         public PaintHelperData()
         {
             ImagePadding = Padding.Empty;
         }
 
+        /// <summary>
+        ///     Gets or sets the image strip image used for painting.
+        /// </summary>
+        /// <value>The image strip image.</value>
+        public Bitmap Image { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the size of one single image in the image strip.
+        /// </summary>
+        /// <value>The size of the image.</value>
+        public Size ImageSize { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the padding indicating the border size.
+        /// </summary>
+        /// <value>The sides.</value>
+        public Padding ImagePadding { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the bounds of the content section.
+        /// </summary>
+        /// <remarks>
+        ///     This placeholder is used later to calculate the content bounds.
+        /// </remarks>
+        /// <value>The content bounds.</value>
+        public Rectangle ContentBounds { get; set; }
+
         public static PaintHelperData Read(XmlNode node, ResourceManager resManager, string imageName)
         {
-            PaintHelperData data = new PaintHelperData { Image = (Bitmap)resManager.GetObject(imageName) };
+            var data = new PaintHelperData { Image = (Bitmap)resManager.GetObject(imageName) };
 
-            XmlNode child = node.FirstChild;
+            var child = node.FirstChild;
             while (child != null)
             {
                 switch (child.Name)
@@ -275,7 +281,7 @@ namespace SkinFramework.Painting
 
         public static Size StringToSize(string value)
         {
-            string[] split = value.Split(',');
+            var split = value.Split(',');
             if (split.Length != 2)
                 throw new ApplicationException("Invalid Value for Size");
 
@@ -284,7 +290,7 @@ namespace SkinFramework.Painting
 
         private static Padding StringToPadding(string value)
         {
-            string[] split = value.Split(',');
+            var split = value.Split(',');
             if (split.Length != 4)
                 throw new ApplicationException("Invalid Value for Padding");
 
@@ -293,7 +299,7 @@ namespace SkinFramework.Painting
 
         public static Color StringToColor(string value)
         {
-            string[] split = value.Split(',');
+            var split = value.Split(',');
             if (split.Length != 3)
                 throw new ApplicationException("Invalid Value for Color");
 
