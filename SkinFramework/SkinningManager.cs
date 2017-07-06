@@ -19,7 +19,8 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Windows.Forms;
-using SkinFramework.DefaultSkins;
+using SkinFramework.DefaultSkins.Office2007;
+using SkinFramework.DefaultSkins.VS2017;
 
 namespace SkinFramework
 {
@@ -140,6 +141,9 @@ namespace SkinFramework
                     break;
                 case DefaultSkin.Office2007Silver:
                     _currentSkin = new Office2007Skin(Office2007Style.Silver);
+                    break;
+                case DefaultSkin.VS2017Dark:
+                    _currentSkin = new VS2017Skin();
                     break;
             }
 

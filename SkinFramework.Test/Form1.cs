@@ -16,6 +16,7 @@
 // (C) 2010 Daniel Kuschny, (http://www.coderline.net)
 
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SkinFramework.Test
@@ -25,17 +26,26 @@ namespace SkinFramework.Test
         public Form1()
         {
             InitializeComponent();
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            //SetStyle(ControlStyles.Opaque, true);
+            this.BackColor = Color.Transparent;
         }
 
         private void radSilver_CheckedChanged(object sender, EventArgs e)
         {
-            var skin = DefaultSkin.Office2007Luna;
+            var skin = DefaultSkin.VS2017Dark;
+
             if (sender == radLuna && radLuna.Checked)
                 skin = DefaultSkin.Office2007Luna;
             else if (sender == radSilver && radSilver.Checked)
                 skin = DefaultSkin.Office2007Silver;
             else if (sender == radObsidian && radObsidian.Checked)
                 skin = DefaultSkin.Office2007Obsidian;
+            else if (sender == radVsdark && radVsdark.Checked)
+                skin = DefaultSkin.VS2017Dark;
 
             skinningManager1.DefaultSkin = skin;
         }

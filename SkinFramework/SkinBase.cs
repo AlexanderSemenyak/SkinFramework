@@ -28,7 +28,8 @@ namespace SkinFramework
     {
         Office2007Luna,
         Office2007Obsidian,
-        Office2007Silver
+        Office2007Silver,
+        VS2017Dark
     }
 
     /// <summary>

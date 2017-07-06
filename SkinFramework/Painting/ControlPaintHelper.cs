@@ -17,6 +17,7 @@
 
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Resources;
 using System.Windows.Forms;
 using System.Xml;
@@ -258,11 +259,46 @@ namespace SkinFramework.Painting
         /// <value>The content bounds.</value>
         public Rectangle ContentBounds { get; set; }
 
-        public static PaintHelperData Read(XmlNode node, ResourceManager resManager, string imageName)
+        public static PaintHelperData Read(XmlNode node, ResourceManager resManager)
         {
-            var data = new PaintHelperData { Image = (Bitmap)resManager.GetObject(imageName) };
+            var data = new PaintHelperData();
+
+            var colors = new Color[0];
 
             var child = node.FirstChild;
+            while (child != null)
+            {
+                switch (child.Name)
+                {
+                    case "ImageSize":
+                        data.ImageSize = StringToSize(child.InnerText);
+                        break;
+                    case "ImagePadding":
+                        data.ImagePadding = StringToPadding(child.InnerText);
+                        break;
+                    case "ImageResource":
+                        data.Image = (Bitmap)resManager.GetObject(child.InnerText);
+                        break;
+                    case "ImageColors":
+                        colors = ReadColorsArray(child);
+                        break;
+                }
+                child = child.NextSibling;
+            }
+
+            if (colors.Length > 0)
+            {
+                data.Image = CreateImageStrip(data.ImageSize, colors);
+            }
+
+            return data;
+        }
+
+        public static PaintHelperData Read(XmlNode node, ResourceManager resManager, string imageName)
+        {
+            PaintHelperData data = new PaintHelperData { Image = (Bitmap)resManager.GetObject(imageName) };
+
+            XmlNode child = node.FirstChild;
             while (child != null)
             {
                 switch (child.Name)
@@ -277,6 +313,56 @@ namespace SkinFramework.Painting
                 child = child.NextSibling;
             }
             return data;
+        }
+
+        private static Bitmap CreateImageStrip(Size size, params Color[] colors)
+        {
+            var bitmap = new Bitmap(size.Width, size.Height * colors.Length);
+            bitmap.MakeTransparent();
+
+            using (var g = Graphics.FromImage(bitmap))
+            {
+                g.InterpolationMode = InterpolationMode.NearestNeighbor;
+
+                var i = 0;
+                foreach (var c in colors)
+                {
+                    using (var p = new Pen(c))
+                    {
+                        g.DrawRectangle(p, 0, size.Height * i, size.Width, size.Height);
+                    }
+                    i++;
+                }
+                g.Flush(FlushIntention.Flush);
+            }
+
+            return bitmap;
+        }
+
+        private static Color[] ReadColorsArray(XmlNode node)
+        {
+            if (!node.HasChildNodes) return new Color[0];
+
+            var colors = new Color[node.ChildNodes.Count];
+
+            var i = 0;
+            var child = node.FirstChild;
+            while (child != null)
+            {
+                switch (child.Name)
+                {
+                    case "Color":
+                        colors[i] = StringToColor(child.Attributes.GetNamedItem("Value").Value);
+                        break;
+                    default:
+                        colors[i] = Color.GreenYellow;
+                        break;
+                }
+                i++;
+                child = child.NextSibling;
+            }
+
+            return colors;
         }
 
         public static Size StringToSize(string value)
@@ -301,8 +387,16 @@ namespace SkinFramework.Painting
         {
             var split = value.Split(',');
             if (split.Length != 3)
-                throw new ApplicationException("Invalid Value for Color");
+            {
+                if (value.Length == 6 || value.Length == 8)
+                {
+                    // Try Hex
+                    int argb = (int)Convert.ToUInt32("0x" + value, 16);
+                    return Color.FromArgb(argb);
+                }
 
+                throw new ApplicationException("Invalid Value for Color");
+            }
             return Color.FromArgb(int.Parse(split[0]), int.Parse(split[1]), int.Parse(split[2]));
         }
 

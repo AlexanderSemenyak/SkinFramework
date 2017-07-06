@@ -22,8 +22,9 @@ using System.Windows.Forms;
 using System.Xml;
 using SkinFramework.Painting;
 
-namespace SkinFramework.DefaultSkins
+namespace SkinFramework.DefaultSkins.Office2007
 {
+
     public class Office2007Skin : SkinBase
     {
         #region Constructor
@@ -86,6 +87,7 @@ namespace SkinFramework.DefaultSkins
         private static void GetButtonData(CaptionButtonPaintData button, bool active, out int buttonIndex,
             out int rendererIndex)
         {
+            var myint = Color.FromArgb((int)0x72555555);
             if (!button.Enabled)
             {
                 rendererIndex = -1;

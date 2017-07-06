@@ -136,7 +136,7 @@ namespace SkinFramework
         private void OnHandleCreated(object sender, EventArgs e)
         {
             // this little line allows us to handle the windowMessages of the parent form in this class
-            AssignHandle(((Form) sender).Handle);
+            AssignHandle(((Form)sender).Handle);
             if (IsProcessNcArea)
             {
                 UpdateStyle();
@@ -193,7 +193,7 @@ namespace SkinFramework
         {
             var supressOriginalMessage = false;
             if (IsProcessNcArea)
-                switch ((Win32Messages) m.Msg)
+                switch ((Win32Messages)m.Msg)
                 {
                     // update form data on style change
                     case Win32Messages.STYLECHANGED:
@@ -205,14 +205,14 @@ namespace SkinFramework
 
                     case Win32Messages.ACTIVATEAPP:
                         // redraw
-                        _formIsActive = (int) m.WParam != 0;
+                        _formIsActive = (int)m.WParam != 0;
                         NcPaint(true);
                         break;
 
                     case Win32Messages.ACTIVATE:
                         // Set active state and redraw
-                        _formIsActive = (int) WAFlags.WA_ACTIVE == (int) m.WParam ||
-                                        (int) WAFlags.WA_CLICKACTIVE == (int) m.WParam;
+                        _formIsActive = (int)WAFlags.WA_ACTIVE == (int)m.WParam ||
+                                        (int)WAFlags.WA_CLICKACTIVE == (int)m.WParam;
                         NcPaint(true);
                         break;
                     case Win32Messages.MDIACTIVATE:
@@ -274,8 +274,8 @@ namespace SkinFramework
                         break;
                     // update region on resize
                     case Win32Messages.WINDOWPOSCHANGING:
-                        var wndPos = (WINDOWPOS) m.GetLParam(typeof(WINDOWPOS));
-                        if ((wndPos.flags & (int) SWPFlags.SWP_NOSIZE) == 0)
+                        var wndPos = (WINDOWPOS)m.GetLParam(typeof(WINDOWPOS));
+                        if ((wndPos.flags & (int)SWPFlags.SWP_NOSIZE) == 0)
                             _manager.CurrentSkin.OnSetRegion(_parentForm, new Size(wndPos.cx, wndPos.cy));
                         break;
                     // remove region on maximize or repaint on resize
@@ -283,8 +283,8 @@ namespace SkinFramework
                         if (_parentForm.WindowState == FormWindowState.Maximized)
                             _parentForm.Region = null;
 
-                        var wndPos2 = (WINDOWPOS) m.GetLParam(typeof(WINDOWPOS));
-                        if ((wndPos2.flags & (int) SWPFlags.SWP_NOSIZE) == 0)
+                        var wndPos2 = (WINDOWPOS)m.GetLParam(typeof(WINDOWPOS));
+                        if ((wndPos2.flags & (int)SWPFlags.SWP_NOSIZE) == 0)
                         {
                             UpdateCaption();
                             NcPaint(true);
@@ -299,21 +299,21 @@ namespace SkinFramework
                     case Win32Messages.NCPAINT:
                         if (NcPaint(true))
                         {
-                            m.Result = (IntPtr) 1;
+                            m.Result = (IntPtr)1;
                             supressOriginalMessage = true;
                         }
                         break;
                     // calculate the non client area size
                     case Win32Messages.NCCALCSIZE:
                         //supressOriginalMessage = true;
-                        if (m.WParam == (IntPtr) 1)
+                        if (m.WParam == (IntPtr)1)
                         {
                             if (_parentForm.MdiParent != null)
                                 break;
                             // add caption height to non client area
-                            var p = (NCCALCSIZE_PARAMS) m.GetLParam(typeof(NCCALCSIZE_PARAMS));
+                            var p = (NCCALCSIZE_PARAMS)m.GetLParam(typeof(NCCALCSIZE_PARAMS));
 
-                            _a.Height = (int) _manager.CurrentSkin
+                            _a.Height = (int)_manager.CurrentSkin
                                 .CaptionHeight; // FormExtenders.GetCaptionHeight(_parentForm);
                             p.rect0.Top += _a.Height + _manager.CurrentSkin.NCPadding.Top;
                             p.rect0.Left += _manager.CurrentSkin.NCPadding.Left;
@@ -324,7 +324,7 @@ namespace SkinFramework
                         }
                         else
                         {
-                            var r = (RECT) m.GetLParam(typeof(RECT));
+                            var r = (RECT)m.GetLParam(typeof(RECT));
                         }
                         m.Result = new IntPtr(1);
                         return;
@@ -341,7 +341,7 @@ namespace SkinFramework
                         if (_parentForm.FormBorderStyle == FormBorderStyle.Sizable ||
                             _parentForm.FormBorderStyle == FormBorderStyle.SizableToolWindow)
                         {
-                            _formIsActive = (int) m.WParam == 1;
+                            _formIsActive = (int)m.WParam == 1;
                             if (NcPaint(true))
                             {
                                 supressOriginalMessage = true;
@@ -365,9 +365,9 @@ namespace SkinFramework
             // update form styles on maximize/restore
             if (_parentForm.MdiParent != null)
             {
-                if ((int) m.WParam == 0)
+                if ((int)m.WParam == 0)
                     UpdateStyle();
-                if ((int) m.WParam == 2)
+                if ((int)m.WParam == 2)
                     _parentForm.Refresh();
             }
 
@@ -402,7 +402,7 @@ namespace SkinFramework
                     _pressedButton.Pressed = false;
                     _pressedButton = null;
                 }
-            var button = CommandButtonByHitTest((HitTest) m.WParam);
+            var button = CommandButtonByHitTest((HitTest)m.WParam);
 
             if (_hoveredButton != button && _hoveredButton != null)
                 _hoveredButton.Hovered = false;
@@ -425,7 +425,7 @@ namespace SkinFramework
         /// <returns></returns>
         private bool OnNcLButtonDown(ref Message m)
         {
-            var button = CommandButtonByHitTest((HitTest) m.WParam);
+            var button = CommandButtonByHitTest((HitTest)m.WParam);
             if (_pressedButton != button && _pressedButton != null)
                 _pressedButton.Pressed = false;
             if (button != null)
@@ -433,7 +433,7 @@ namespace SkinFramework
             _pressedButton = button;
             if (_pressedButton != null)
             {
-                m.Result = (IntPtr) 1;
+                m.Result = (IntPtr)1;
                 return true;
             }
             return false;
@@ -449,7 +449,7 @@ namespace SkinFramework
             if (_parentForm.Parent == null)
             {
                 // create minMax info for maximize data
-                var info = (MINMAXINFO) m.GetLParam(typeof(MINMAXINFO));
+                var info = (MINMAXINFO)m.GetLParam(typeof(MINMAXINFO));
                 var rect = Screen.FromHandle(Handle).WorkingArea;
                 rect.Offset(-rect.X, -rect.Y);
 
@@ -481,7 +481,7 @@ namespace SkinFramework
                 // set wished maximize size
                 Marshal.StructureToPtr(info, m.LParam, true);
 
-                m.Result = (IntPtr) 0;
+                m.Result = (IntPtr)0;
                 return true;
             }
             return false;
@@ -494,13 +494,20 @@ namespace SkinFramework
         {
             // remove the border style
             var currentStyle = Win32Api.GetWindowLong(Handle, GWLIndex.GWL_STYLE);
-            if ((currentStyle & (int) WindowStyles.WS_BORDER) != 0)
+            if ((currentStyle & (int)WindowStyles.WS_BORDER) != 0)
             {
-                currentStyle &= ~(int) WindowStyles.WS_BORDER;
+                currentStyle &= ~(int)WindowStyles.WS_BORDER;
+
                 Win32Api.SetWindowLong(_parentForm.Handle, GWLIndex.GWL_STYLE, currentStyle);
-                Win32Api.SetWindowPos(_parentForm.Handle, (IntPtr) 0, -1, -1, -1, -1,
-                    (int) (SWPFlags.SWP_NOZORDER | SWPFlags.SWP_NOSIZE | SWPFlags.SWP_NOMOVE |
+                Win32Api.SetWindowPos(_parentForm.Handle, (IntPtr)0, -1, -1, -1, -1,
+                    (int)(SWPFlags.SWP_NOZORDER | SWPFlags.SWP_NOSIZE | SWPFlags.SWP_NOMOVE |
                            SWPFlags.SWP_FRAMECHANGED | SWPFlags.SWP_NOREDRAW | SWPFlags.SWP_NOACTIVATE));
+            }
+
+            if ((currentStyle & (int)WindowStyles.WS_EX_TRANSPARENT) == 0)
+            {
+                currentStyle |= (int)WindowStyles.WS_EX_TRANSPARENT;
+                Win32Api.SetWindowLong(_parentForm.Handle, GWLIndex.GWL_STYLE, currentStyle);
             }
         }
 
@@ -536,7 +543,9 @@ namespace SkinFramework
             var rect = rectScreen.ToRectangle();
 
             var borderSize = FormExtenders.GetBorderSize(_parentForm);
-            rect.Offset(-rect.Left, -rect.Top);
+            rect.Offset(-rect.Left + 2, -rect.Top + 2);
+            rect.Width -= 4;
+            rect.Height += 4;
 
             var captionButtonSize = FormExtenders.GetCaptionButtonSize(_parentForm);
             var buttonRect = new Rectangle(rect.Right - borderSize.Width - captionButtonSize.Width,
@@ -608,10 +617,10 @@ namespace SkinFramework
                 return false;
             var result = false;
 
-            var hdc = (IntPtr) 0;
+            var hdc = (IntPtr)0;
             Graphics g = null;
             Region region = null;
-            var hrgn = (IntPtr) 0;
+            var hrgn = (IntPtr)0;
 
             try
             {
@@ -625,7 +634,7 @@ namespace SkinFramework
                 // prepare image bounds
                 var borderSize = FormExtenders.GetBorderSize(_parentForm);
                 var captionHeight =
-                    (int) _manager.CurrentSkin.CaptionHeight; //()!=null FormExtenders.GetCaptionHeight(_parentForm);
+                    (int)_manager.CurrentSkin.CaptionHeight; //()!=null FormExtenders.GetCaptionHeight(_parentForm);
 
                 var rectScreen = new RECT();
                 Win32Api.GetWindowRect(_parentForm.Handle, ref rectScreen);
@@ -634,8 +643,8 @@ namespace SkinFramework
                 rectBounds.Offset(-rectBounds.X, -rectBounds.Y);
 
                 // create graphics handle
-                hdc = Win32Api.GetDCEx(_parentForm.Handle, (IntPtr) 0,
-                    DCXFlags.Cache | DCXFlags.ClipSiblings | DCXFlags.Window);
+                hdc = Win32Api.GetDCEx(_parentForm.Handle, (IntPtr)0,
+                    DCXFlags.Cache /*| DCXFlags.ClipSiblings*/ | DCXFlags.Window);
                 g = Graphics.FromHdc(hdc);
 
                 // prepare clipping
@@ -714,17 +723,17 @@ namespace SkinFramework
             }
             catch (Exception)
             {
-// error drawing
+                // error drawing
                 result = false;
             }
 
             // cleanup data
-            if (hdc != (IntPtr) 0)
+            if (hdc != (IntPtr)0)
             {
-                Win32Api.SelectClipRgn(hdc, (IntPtr) 0);
+                Win32Api.SelectClipRgn(hdc, (IntPtr)0);
                 Win32Api.ReleaseDC(_parentForm.Handle, hdc);
             }
-            if (region != null && hrgn != (IntPtr) 0)
+            if (region != null && hrgn != (IntPtr)0)
                 region.ReleaseHrgn(hrgn);
 
             region?.Dispose();
@@ -764,7 +773,7 @@ namespace SkinFramework
                 // not in caption -> client
                 if (!rectCaption.Contains(point))
                 {
-                    m.Result = (IntPtr) (int) HitTest.HTCLIENT;
+                    m.Result = (IntPtr)(int)HitTest.HTCLIENT;
                     return true;
                 }
 
@@ -775,7 +784,7 @@ namespace SkinFramework
                     rectSysMenu.Size = SystemInformation.SmallIconSize;
                     if (rectSysMenu.Contains(point))
                     {
-                        m.Result = (IntPtr) (int) HitTest.HTSYSMENU;
+                        m.Result = (IntPtr)(int)HitTest.HTSYSMENU;
                         return true;
                     }
                 }
@@ -785,15 +794,15 @@ namespace SkinFramework
                 var sysButton = CommandButtonFromPoint(pt);
                 if (sysButton != null)
                 {
-                    m.Result = (IntPtr) sysButton.HitTest;
+                    m.Result = (IntPtr)sysButton.HitTest;
                     return true;
                 }
 
                 // on Caption?
-                m.Result = (IntPtr) (int) HitTest.HTCAPTION;
+                m.Result = (IntPtr)(int)HitTest.HTCAPTION;
                 return true;
             }
-            m.Result = (IntPtr) (int) HitTest.HTNOWHERE;
+            m.Result = (IntPtr)(int)HitTest.HTNOWHERE;
             return true;
         }
 
@@ -811,7 +820,7 @@ namespace SkinFramework
             if (_pressedButton != null)
             {
                 // get button at wparam
-                var button = CommandButtonByHitTest((HitTest) m.WParam);
+                var button = CommandButtonByHitTest((HitTest)m.WParam);
                 if (button == null)
                     return false;
 

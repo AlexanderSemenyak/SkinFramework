@@ -118,16 +118,56 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Office07Black" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Office07Black.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="CloseIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\VS2017\Dark\CloseIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Office07Silver" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Office07Silver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="FormBorder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\VS2017\Dark\FormBorder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Office07Blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Office07Blue.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="FormCaption" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\VS2017\Dark\FormCaption.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="VisualStudioLogo_whiteHalo_48x" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\VisualStudioLogo_whiteHalo_48x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="FormCaptionButton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\VS2017\Dark\FormCaptionButton.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MaximizeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\VS2017\Dark\MaximizeIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MinimizeIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\VS2017\Dark\MinimizeIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RestoreIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\Resources\VS2017\Dark\RestoreIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SkinDefinition" xml:space="preserve">
+    <value>&lt;Skin&gt;
+    &lt;Meta&gt;
+        &lt;Name&gt;VS2017 Dark&lt;/Name&gt;
+        &lt;Autor&gt;Dan Spiteri&lt;/Autor&gt;
+    &lt;/Meta&gt;
+    &lt;Form&gt;
+        &lt;ActiveCaption&gt;153,153,153&lt;/ActiveCaption&gt;
+        &lt;InactiveCaption&gt;101,101,101&lt;/InactiveCaption&gt;
+        &lt;CenterCaption&gt;false&lt;/CenterCaption&gt;
+        &lt;Caption&gt;
+            &lt;Background&gt;
+                &lt;ImageSize&gt;15,30&lt;/ImageSize&gt;
+                &lt;ImagePadding&gt;6,5,6,2&lt;/ImagePadding&gt;
+            &lt;/Background&gt;
+            &lt;NormalButton&gt;
+                &lt;IconSize&gt;10,10&lt;/IconSize&gt;
+                &lt;ImageSize&gt;34,26&lt;/ImageSize&gt;
+                &lt;ImagePadding&gt;12,8,12,8&lt;/ImagePadding&gt;
+            &lt;/NormalButton&gt;
+        &lt;/Caption&gt;
+        &lt;Border&gt;
+            &lt;ImageSize&gt;30,30&lt;/ImageSize&gt;
+            &lt;ImagePadding&gt;6,6,6,6&lt;/ImagePadding&gt;
+        &lt;/Border&gt;
+    &lt;/Form&gt;
+&lt;/Skin&gt;</value>
+  </data>
+  <data name="vstheme" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>themes\vs2017dark.vstheme;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

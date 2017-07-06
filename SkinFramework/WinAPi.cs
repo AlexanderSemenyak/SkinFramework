@@ -116,6 +116,7 @@ namespace SkinFramework
     public enum WindowStyles : uint
     {
         WS_CAPTION = 0x00C00000,
+        WS_EX_TRANSPARENT = 0x00000020,
         WS_BORDER = 0x00800000
     }
     //[Flags]
@@ -579,9 +580,9 @@ namespace SkinFramework
         public override bool Equals(object Object)
         {
             if (Object is RECT)
-                return Equals((RECT) Object);
+                return Equals((RECT)Object);
             if (Object is Rectangle)
-                return Equals(new RECT((Rectangle) Object));
+                return Equals(new RECT((Rectangle)Object));
 
             return false;
         }

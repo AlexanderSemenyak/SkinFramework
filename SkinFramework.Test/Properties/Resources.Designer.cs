@@ -89,5 +89,15 @@ namespace SkinFramework.Test.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap VisualStudioLogo_whiteHalo_48x {
+            get {
+                object obj = ResourceManager.GetObject("VisualStudioLogo_whiteHalo_48x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

@@ -60,7 +60,7 @@ namespace SkinFramework
 
             // Check for Caption
             var style = Win32Api.GetWindowLong(form.Handle, GWLIndex.GWL_STYLE);
-            var caption = (style & (int) WindowStyles.WS_CAPTION) != 0;
+            var caption = (style & (int)WindowStyles.WS_CAPTION) != 0;
             var factor = SystemInformation.BorderMultiplierFactor - 1;
 
             var system = Environment.OSVersion;

@@ -88,38 +88,52 @@
     <Compile Include="CaptionButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DefaultSkins\Office2007Obsidian.Designer.cs">
+    <Compile Include="DefaultSkins\Office2007\Office2007Obsidian.Designer.cs">
       <DependentUpon>Office2007Obsidian.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="DefaultSkins\Office2007Luna.Designer.cs">
+    <Compile Include="DefaultSkins\Office2007\Office2007Luna.Designer.cs">
       <DependentUpon>Office2007Luna.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="DefaultSkins\Office2007Silver.Designer.cs">
+    <Compile Include="DefaultSkins\Office2007\Office2007Silver.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Office2007Silver.resx</DependentUpon>
     </Compile>
+    <Compile Include="DefaultSkins\VS2017\SkinEnvironmentPalette.cs" />
+    <Compile Include="DefaultSkins\VS2017\VS2017Dark.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VS2017Dark.resx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultSkins\VS2017\VS2017Skin.cs" />
+    <Compile Include="DefaultSkins\VS2017\VS2017SkinPalette.cs" />
+    <Compile Include="DefaultSkins\VS2017\VSTheme\Palette.cs" />
+    <Compile Include="Painting\ColorPaintHelper.cs" />
     <Compile Include="Painting\ControlPaintHelper.cs" />
     <Compile Include="FormExtenders.cs" />
     <Compile Include="Painting\ImageStrip.cs" />
     <Compile Include="SkinningForm.cs">
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="DefaultSkins\Office2007Obsidian.resx">
+    <EmbeddedResource Include="DefaultSkins\Office2007\Office2007Obsidian.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Office2007Obsidian.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="DefaultSkins\Office2007Luna.resx">
+    <EmbeddedResource Include="DefaultSkins\Office2007\Office2007Luna.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Office2007Luna.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="DefaultSkins\Office2007Silver.resx">
+    <EmbeddedResource Include="DefaultSkins\Office2007\Office2007Silver.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Office2007Silver.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DefaultSkins\VS2017\VS2017Dark.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>VS2017Dark.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -148,7 +162,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SkinBase.cs" />
-    <Compile Include="DefaultSkins\Office2007Skin.cs" />
+    <Compile Include="DefaultSkins\Office2007\Office2007Skin.cs" />
     <Compile Include="WinAPi.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +181,42 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DefaultSkins\VS2017\Themes\vs2017dark.vstheme" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FormBorder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Close_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Minimize_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MaximizeIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VS2017\Dark\FormCaptionButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VS2017\Dark\MaximizeIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VS2017\Dark\MinimizeIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VS2017\Dark\RestoreIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VS2017\Dark\CloseIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VS2017\Dark\FormBorder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\VS2017\Dark\FormCaption.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
