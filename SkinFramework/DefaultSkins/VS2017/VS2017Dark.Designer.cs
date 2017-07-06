@@ -139,14 +139,15 @@ namespace SkinFramework.DefaultSkins.VS2017 {
         ///    &lt;Form&gt;
         ///        &lt;ActiveCaption&gt;153,153,153&lt;/ActiveCaption&gt;
         ///        &lt;InactiveCaption&gt;101,101,101&lt;/InactiveCaption&gt;
-        ///        &lt;CenterCaption&gt;false&lt;/CenterCaption&gt;
+        ///        &lt;CenterCaption&gt;true&lt;/CenterCaption&gt;
         ///        &lt;Caption&gt;
         ///            &lt;Background&gt;
-        ///                &lt;ImageSize&gt;15,30&lt;/ImageSize&gt;
-        ///                &lt;ImagePadding&gt;6,5,6,2&lt;/ImagePadding&gt;
+        ///                &lt;ImageSize&gt;20,20&lt;/ImageSize&gt;
+        ///                &lt;ImagePadding&gt;2,2,2,2&lt;/ImagePadding&gt;
         ///            &lt;/Background&gt;
         ///            &lt;NormalButton&gt;
-        ///                &lt;IconSize&gt;10,10&lt;/IconSize&gt;        /// [rest of string was truncated]&quot;;.
+        ///                &lt;IconSize&gt;10,10&lt;/IconSize&gt;
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string SkinDefinition {
             get {

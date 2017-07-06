@@ -103,6 +103,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Office2007Silver.resx</DependentUpon>
     </Compile>
+    <Compile Include="DefaultSkins\VS2017\Shadows\FormGlowShadow.cs" />
+    <Compile Include="DefaultSkins\VS2017\Shadows\FormShadowBase.cs" />
     <Compile Include="DefaultSkins\VS2017\SkinEnvironmentPalette.cs" />
     <Compile Include="DefaultSkins\VS2017\VS2017Dark.Designer.cs">
       <AutoGen>True</AutoGen>

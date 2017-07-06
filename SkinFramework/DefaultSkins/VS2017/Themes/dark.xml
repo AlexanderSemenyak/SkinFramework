@@ -9,18 +9,18 @@
         <CenterCaption>false</CenterCaption>
         <Caption>
             <Background>
-                <ImageSize>15,30</ImageSize>
-                <ImagePadding>6,5,6,2</ImagePadding>
+                <ImageSize>20,20</ImageSize>
+                <ImagePadding>2,2,2,2</ImagePadding>
             </Background>
             <NormalButton>
                 <IconSize>10,10</IconSize>
                 <ImageSize>34,26</ImageSize>
-                <ImagePadding>12,8,12,8</ImagePadding>
+                <ImagePadding>1,1,1,1</ImagePadding>
             </NormalButton>
         </Caption>
         <Border>
-            <ImageSize>30,30</ImageSize>
-            <ImagePadding>6,6,6,6</ImagePadding>
+            <ImageSize>20,20</ImageSize>
+            <ImagePadding>2,2,2,2</ImagePadding>
         </Border>
     </Form>
 </Skin>

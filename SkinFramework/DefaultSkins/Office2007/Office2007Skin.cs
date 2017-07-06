@@ -87,7 +87,6 @@ namespace SkinFramework.DefaultSkins.Office2007
         private static void GetButtonData(CaptionButtonPaintData button, bool active, out int buttonIndex,
             out int rendererIndex)
         {
-            var myint = Color.FromArgb((int)0x72555555);
             if (!button.Enabled)
             {
                 rendererIndex = -1;

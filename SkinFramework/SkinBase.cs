@@ -17,6 +17,7 @@
 
 using System.Drawing;
 using System.Windows.Forms;
+using SkinFramework.DefaultSkins.VS2017.Shadows;
 using SkinFramework.Painting;
 
 namespace SkinFramework
@@ -69,6 +70,13 @@ namespace SkinFramework
         /// <param name="paintData">The paint data to use for drawing.</param>
         /// <returns><code>true</code> if the original painting should be suppressed, otherwise <code>false</code></returns>
         public abstract bool OnNcPaint(Form form, SkinningFormPaintData paintData);
+
+
+        public virtual FormShadowBase OnCreateShadow(Form form)
+        {
+            // No Shadow
+            return null;
+        }
 
         #endregion
     }

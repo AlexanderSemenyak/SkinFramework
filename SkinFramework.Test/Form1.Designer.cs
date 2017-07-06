@@ -41,6 +41,7 @@
             // 
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
             this.flowLayoutPanel1.Controls.Add(this.radVsdark);
             this.flowLayoutPanel1.Controls.Add(this.radLuna);
             this.flowLayoutPanel1.Controls.Add(this.radSilver);

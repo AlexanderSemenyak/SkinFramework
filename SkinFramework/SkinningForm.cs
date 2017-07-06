@@ -22,6 +22,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
+using SkinFramework.DefaultSkins.VS2017.Shadows;
 using SkinFramework.Painting;
 
 namespace SkinFramework
@@ -56,6 +57,8 @@ namespace SkinFramework
 
         // graphics data
         private readonly BufferedGraphicsContext _bufferContext;
+
+        private FormShadowBase _shadowForm;
 
         private BufferedGraphics _bufferGraphics;
         private Size _currentCacheSize;
@@ -115,6 +118,31 @@ namespace SkinFramework
             _parentForm.HandleDestroyed += OnHandleDestroyed;
             _parentForm.TextChanged += OnTextChanged;
             _parentForm.Disposed += OnParentDisposed;
+            _parentForm.Closed += OnParentClosed;
+            _parentForm.Load += OnParentLoad;
+            _parentForm.Activated += OnParentActivated;
+            _parentForm.Deactivate += OnParentDeactivate;
+        }
+
+        private void OnParentDeactivate(object sender, EventArgs eventArgs)
+        {
+            RemoveShadow();
+            CreateShadow();
+        }
+
+        private void OnParentActivated(object sender, EventArgs eventArgs)
+        {
+            RemoveShadow();
+            CreateShadow();
+        }
+
+        private void OnParentLoad(object sender, EventArgs eventArgs)
+        {
+        }
+
+        private void OnParentClosed(object sender, EventArgs eventArgs)
+        {
+            if (_parentForm.Owner != null) this._parentForm.Owner = null;
         }
 
         /// <summary>
@@ -126,6 +154,10 @@ namespace SkinFramework
             _parentForm.HandleDestroyed -= OnHandleDestroyed;
             _parentForm.TextChanged -= OnTextChanged;
             _parentForm.Disposed -= OnParentDisposed;
+            _parentForm.Closed -= OnParentClosed;
+            _parentForm.Load -= OnParentLoad;
+            _parentForm.Activated -= OnParentActivated;
+            _parentForm.Deactivate -= OnParentDeactivate;
         }
 
         /// <summary>
@@ -162,6 +194,7 @@ namespace SkinFramework
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void OnParentDisposed(object sender, EventArgs e)
         {
+            RemoveShadow();
             // unregister events as the parent of the form is disposed
             if (_parentForm != null)
                 UnregisterEventHandlers();
@@ -387,6 +420,12 @@ namespace SkinFramework
                     new Size(rect1.Right - rect1.Left, rect1.Bottom - rect1.Top));
                 NcPaint(true);
             }
+
+            if (_parentForm.WindowState == FormWindowState.Normal)
+            {
+                if (_shadowForm != null)
+                    _shadowForm.Visible = true;
+            }
         }
 
         /// <summary>
@@ -437,6 +476,27 @@ namespace SkinFramework
                 return true;
             }
             return false;
+        }
+
+        private void CreateShadow()
+        {
+            if (_shadowForm != null)
+            {
+                RemoveShadow();
+            }
+
+            _shadowForm = _manager.CurrentSkin?.OnCreateShadow(_parentForm);
+        }
+
+        private void RemoveShadow()
+        {
+            if (_shadowForm == null || _shadowForm.IsDisposed) return;
+
+            _shadowForm.Visible = false;
+            _parentForm.Owner = _shadowForm.Owner;
+            _shadowForm.Owner = null;
+            _shadowForm.Dispose();
+            _shadowForm = null;
         }
 
         /// <summary>
@@ -503,12 +563,6 @@ namespace SkinFramework
                     (int)(SWPFlags.SWP_NOZORDER | SWPFlags.SWP_NOSIZE | SWPFlags.SWP_NOMOVE |
                            SWPFlags.SWP_FRAMECHANGED | SWPFlags.SWP_NOREDRAW | SWPFlags.SWP_NOACTIVATE));
             }
-
-            if ((currentStyle & (int)WindowStyles.WS_EX_TRANSPARENT) == 0)
-            {
-                currentStyle |= (int)WindowStyles.WS_EX_TRANSPARENT;
-                Win32Api.SetWindowLong(_parentForm.Handle, GWLIndex.GWL_STYLE, currentStyle);
-            }
         }
 
 
@@ -543,9 +597,9 @@ namespace SkinFramework
             var rect = rectScreen.ToRectangle();
 
             var borderSize = FormExtenders.GetBorderSize(_parentForm);
-            rect.Offset(-rect.Left + 2, -rect.Top + 2);
-            rect.Width -= 4;
-            rect.Height += 4;
+            rect.Offset(-rect.Left/* + 2*/, -rect.Top/* + 2*/);
+            //rect.Width -= 4;
+            //rect.Height += 4;
 
             var captionButtonSize = FormExtenders.GetCaptionButtonSize(_parentForm);
             var buttonRect = new Rectangle(rect.Right - borderSize.Width - captionButtonSize.Width,
@@ -644,7 +698,7 @@ namespace SkinFramework
 
                 // create graphics handle
                 hdc = Win32Api.GetDCEx(_parentForm.Handle, (IntPtr)0,
-                    DCXFlags.Cache /*| DCXFlags.ClipSiblings*/ | DCXFlags.Window);
+                    DCXFlags.Cache | DCXFlags.ClipSiblings | DCXFlags.Window);
                 g = Graphics.FromHdc(hdc);
 
                 // prepare clipping
@@ -761,7 +815,7 @@ namespace SkinFramework
             if (rect.Contains(point))
             {
                 var borderSize = FormExtenders.GetBorderSize(_parentForm);
-                rect.Inflate(-borderSize.Width, -borderSize.Height);
+                //rect.Inflate(-borderSize.Width, -borderSize.Height);
 
                 // let form handle hittest itself if we are on borders
                 if (!rect.Contains(point))

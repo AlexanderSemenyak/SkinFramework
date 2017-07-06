@@ -148,21 +148,21 @@
     &lt;Form&gt;
         &lt;ActiveCaption&gt;153,153,153&lt;/ActiveCaption&gt;
         &lt;InactiveCaption&gt;101,101,101&lt;/InactiveCaption&gt;
-        &lt;CenterCaption&gt;false&lt;/CenterCaption&gt;
+        &lt;CenterCaption&gt;true&lt;/CenterCaption&gt;
         &lt;Caption&gt;
             &lt;Background&gt;
-                &lt;ImageSize&gt;15,30&lt;/ImageSize&gt;
-                &lt;ImagePadding&gt;6,5,6,2&lt;/ImagePadding&gt;
+                &lt;ImageSize&gt;20,20&lt;/ImageSize&gt;
+                &lt;ImagePadding&gt;2,2,2,2&lt;/ImagePadding&gt;
             &lt;/Background&gt;
             &lt;NormalButton&gt;
                 &lt;IconSize&gt;10,10&lt;/IconSize&gt;
                 &lt;ImageSize&gt;34,26&lt;/ImageSize&gt;
-                &lt;ImagePadding&gt;12,8,12,8&lt;/ImagePadding&gt;
+                &lt;ImagePadding&gt;1,1,1,1&lt;/ImagePadding&gt;
             &lt;/NormalButton&gt;
         &lt;/Caption&gt;
         &lt;Border&gt;
-            &lt;ImageSize&gt;30,30&lt;/ImageSize&gt;
-            &lt;ImagePadding&gt;6,6,6,6&lt;/ImagePadding&gt;
+            &lt;ImageSize&gt;20,20&lt;/ImageSize&gt;
+            &lt;ImagePadding&gt;8,8,8,8&lt;/ImagePadding&gt;
         &lt;/Border&gt;
     &lt;/Form&gt;
 &lt;/Skin&gt;</value>

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using SkinFramework.DefaultSkins.VS2017.Shadows;
 using SkinFramework.Painting;
 
 namespace SkinFramework.DefaultSkins.VS2017
@@ -78,7 +79,7 @@ namespace SkinFramework.DefaultSkins.VS2017
                     new ControlPaintHelper(PaintHelperData.Read(captionNode["Background"], _currentManager,
                         "FormCaption"));
                 //  calculate NC
-                _ncPadding = new Padding(10, 10, 10, 10);
+                _ncPadding = new Padding(3, 3, 3, 3);
 
 
                 // Big Buttons
@@ -138,23 +139,27 @@ namespace SkinFramework.DefaultSkins.VS2017
         {
             if (!button.Enabled)
             {
-                rendererIndex = -1;
                 buttonIndex = (int)ButtonState.Inactive;
+                rendererIndex = (int)ButtonState.Inactive;
             }
             else if (button.Pressed)
             {
-                buttonIndex = active ? (int)ButtonState.Down : (int)ButtonState.HoverInactive;
+                //buttonIndex = active ? (int)ButtonState.Down : (int)ButtonState.HoverInactive;
+                buttonIndex = (int)ButtonState.Down;
                 rendererIndex = (int)ButtonState.Down;
             }
             else if (button.Hovered)
             {
-                buttonIndex = active ? (int)ButtonState.HoverActive : (int)ButtonState.HoverInactive;
+                //buttonIndex = active ? (int)ButtonState.HoverActive : (int)ButtonState.HoverInactive;
+                buttonIndex = (int)ButtonState.HoverActive;
+                //rendererIndex = active ? (int)ButtonState.HoverActive : (int)ButtonState.HoverInactive;
                 rendererIndex = (int)ButtonState.HoverActive;
             }
             else
             {
-                buttonIndex = active ? (int)ButtonState.Active : (int)ButtonState.Inactive;
-                rendererIndex = -1;
+                //buttonIndex = active ? (int)ButtonState.Active : (int)ButtonState.Inactive;
+                buttonIndex = (int)ButtonState.Active;
+                rendererIndex = (int)ButtonState.Active;
             }
         }
 
@@ -167,12 +172,8 @@ namespace SkinFramework.DefaultSkins.VS2017
         public override bool OnNcPaint(Form form, SkinningFormPaintData paintData)
         {
             if (form == null) return false;
-            paintData.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            //paintData.Graphics.CompositingMode = CompositingMode.SourceCopy;
-            paintData.Graphics.CompositingQuality = CompositingQuality.HighQuality;
-            paintData.Graphics.InterpolationMode = InterpolationMode.Bilinear;
-
-            paintData.Graphics.Clear(Color.FromArgb(0, Color.LavenderBlush));
+            form.BackColor = Color.FromArgb(255, 45, 45, 48);
+            //paintData.Graphics.CompositingMode = CompositingMode.SourceOver;
 
             var isMaximized = form.WindowState == FormWindowState.Maximized;
             var isMinimized = form.WindowState == FormWindowState.Minimized;
@@ -183,7 +184,12 @@ namespace SkinFramework.DefaultSkins.VS2017
 
             var captionBounds = windowBounds;
             var borderSize = paintData.Borders;
-            captionBounds.Height = borderSize.Height + paintData.CaptionHeight;
+            //var borderSize = new Rectangle(2, 2, 2, 2);
+            captionBounds.X += borderSize.Width;
+            captionBounds.Width -= borderSize.Width * 2;
+            captionBounds.Y += borderSize.Height;
+            //captionBounds.Height -= borderSize.Width * 2;
+            captionBounds.Height = /*borderSize.Height +*/ paintData.CaptionHeight;
 
             var textBounds = captionBounds;
             var iconBounds = captionBounds;
@@ -192,8 +198,11 @@ namespace SkinFramework.DefaultSkins.VS2017
             iconBounds.Height -= borderSize.Height;
 
             // Draw Caption
+            //PaintAsNearestNeighbour(paintData.Graphics, g =>
+            //{
             var active = paintData.Active;
             _formCaption.Draw(paintData.Graphics, captionBounds, active ? 0 : 1);
+            //});
 
             // Paint Icon
             if (paintData.HasMenu && form.Icon != null)
@@ -245,7 +254,7 @@ namespace SkinFramework.DefaultSkins.VS2017
 
                 // draw Icon 
                 var b = data.Bounds;
-                //b.Y += 1;
+                b.Y += 1;
                 if (iconIndex >= 0)
                     iconStrip.Draw(paintData.Graphics, iconIndex, b, Rectangle.Empty,
                         DrawingAlign.Center, DrawingAlign.Center);
@@ -272,15 +281,35 @@ namespace SkinFramework.DefaultSkins.VS2017
 
             var bounds = windowBounds;
             //bounds.X -= 5;
-            //bounds.Y -= 5;
+            //bounds.Y -= 32;
             //bounds.Width += 10;
-            //bounds.Height += 10;
+            //bounds.Height += 36;
 
             // Paint borders and corners
-            _formBorder.DrawFrame(paintData.Graphics, bounds, paintData.Active ? 0 : 1);
+            // PaintAsNearestNeighbour(paintData.Graphics, g =>
+            //{
+            _formBorder.Draw(paintData.Graphics, bounds, paintData.Active ? 0 : 1);
+            //});
 
             paintData.Graphics.ResetClip();
             return true;
+        }
+
+        private void PaintAsNearestNeighbour(Graphics g, Action<Graphics> action)
+        {
+            var nnMode = g.BeginContainer();
+            g.InterpolationMode = InterpolationMode.NearestNeighbor;
+
+            action?.Invoke(g);
+
+            g.EndContainer(nnMode);
+
+        }
+
+        public override FormShadowBase OnCreateShadow(Form form)
+        {
+            var color = Form.ActiveForm == form ? Color.FromArgb(255, 0, 122, 204) : Color.FromArgb(255, 67, 67, 70);
+            return new FormGlowShadow(form, color, 16, 64, 2);
         }
 
         /*
