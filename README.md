@@ -1,10 +1,12 @@
-#Preface:
+# What's different in this fork?
+I hope to extend this framework to not only make it very simple to create custom (and awesome looking) themes, but also be lightweight. As part of the challenge, I am attempting to create a theme that mimics the look of Visual Studio 2017, with the glow border etc.
+
+# Chat / Development:
 
 [![Join the chat at https://gitter.im/TruDan/SkinFramework](https://badges.gitter.im/TruDan/SkinFramework.svg)](https://gitter.im/TruDan/SkinFramework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-As i liked very much how the original author managed to the objective; i've started to add some modifications, due to some NC painting problems in my development machines with Win7/Win8. 
 
-#Introduction: 
+# Introduction: 
 
 ![Screenshot](Images/office07luna.png)
 
