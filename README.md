@@ -1,5 +1,7 @@
 #Preface:
 
+[![Join the chat at https://gitter.im/TruDan/SkinFramework](https://badges.gitter.im/TruDan/SkinFramework.svg)](https://gitter.im/TruDan/SkinFramework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 As i liked very much how the original author managed to the objective; i've started to add some modifications, due to some NC painting problems in my development machines with Win7/Win8. 
 
 #Introduction: 
