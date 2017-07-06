@@ -79,7 +79,7 @@ namespace SkinFramework.DefaultSkins.VS2017
                     new ControlPaintHelper(PaintHelperData.Read(captionNode["Background"], _currentManager,
                         "FormCaption"));
                 //  calculate NC
-                _ncPadding = new Padding(3, 3, 3, 3);
+                _ncPadding = new Padding(8, 0, 8, 8);
 
 
                 // Big Buttons

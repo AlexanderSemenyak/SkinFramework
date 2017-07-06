@@ -482,7 +482,7 @@ namespace SkinFramework
         {
             if (_shadowForm != null)
             {
-                RemoveShadow();
+                //RemoveShadow();
             }
 
             _shadowForm = _manager.CurrentSkin?.OnCreateShadow(_parentForm);
@@ -597,7 +597,7 @@ namespace SkinFramework
             var rect = rectScreen.ToRectangle();
 
             var borderSize = FormExtenders.GetBorderSize(_parentForm);
-            rect.Offset(-rect.Left/* + 2*/, -rect.Top/* + 2*/);
+            rect.Offset(-rect.Left, -rect.Top);
             //rect.Width -= 4;
             //rect.Height += 4;
 
@@ -815,7 +815,7 @@ namespace SkinFramework
             if (rect.Contains(point))
             {
                 var borderSize = FormExtenders.GetBorderSize(_parentForm);
-                //rect.Inflate(-borderSize.Width, -borderSize.Height);
+                rect.Inflate(-borderSize.Width, -borderSize.Height);
 
                 // let form handle hittest itself if we are on borders
                 if (!rect.Contains(point))
