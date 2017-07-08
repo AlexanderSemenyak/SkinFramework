@@ -125,13 +125,13 @@
     <None Include="Resources\Office07Black.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SkinFramework\SkinFramework.csproj">
-      <Project>{d80211dd-2ef6-44f0-b4f8-fa3a708528ce}</Project>
-      <Name>SkinFramework</Name>
-    </ProjectReference>
+    <None Include="Resources\VisualStudioLogo_whiteHalo_48x.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\VisualStudioLogo_whiteHalo_48x.png" />
+    <ProjectReference Include="..\SkinFramework.Old\SkinFramework.Old.csproj">
+      <Project>{D80211DD-2EF6-44F0-B4F8-FA3A708528CE}</Project>
+      <Name>SkinFramework.Old</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

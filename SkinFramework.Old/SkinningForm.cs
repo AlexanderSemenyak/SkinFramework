@@ -53,7 +53,7 @@ namespace SkinFramework
         private Form _parentForm;
 
         private readonly List<CaptionButton> _captionButtons;
-        private bool _formIsActive;
+        public bool IsActive { get; private set; }
 
         // graphics data
         private readonly BufferedGraphicsContext _bufferContext;
@@ -127,13 +127,13 @@ namespace SkinFramework
         private void OnParentDeactivate(object sender, EventArgs eventArgs)
         {
             RemoveShadow();
-            CreateShadow();
+            CreateShadow(IsActive);
         }
 
         private void OnParentActivated(object sender, EventArgs eventArgs)
         {
             RemoveShadow();
-            CreateShadow();
+            CreateShadow(IsActive);
         }
 
         private void OnParentLoad(object sender, EventArgs eventArgs)
@@ -238,22 +238,22 @@ namespace SkinFramework
 
                     case Win32Messages.ACTIVATEAPP:
                         // redraw
-                        _formIsActive = (int)m.WParam != 0;
+                        IsActive = (int)m.WParam != 0;
                         NcPaint(true);
                         break;
 
                     case Win32Messages.ACTIVATE:
                         // Set active state and redraw
-                        _formIsActive = (int)WAFlags.WA_ACTIVE == (int)m.WParam ||
+                        IsActive = (int)WAFlags.WA_ACTIVE == (int)m.WParam ||
                                         (int)WAFlags.WA_CLICKACTIVE == (int)m.WParam;
                         NcPaint(true);
                         break;
                     case Win32Messages.MDIACTIVATE:
                         // set active and redraw on activation 
                         if (m.WParam == _parentForm.Handle)
-                            _formIsActive = false;
+                            IsActive = false;
                         else if (m.LParam == _parentForm.Handle)
-                            _formIsActive = true;
+                            IsActive = true;
                         NcPaint(true);
                         break;
 
@@ -374,7 +374,7 @@ namespace SkinFramework
                         if (_parentForm.FormBorderStyle == FormBorderStyle.Sizable ||
                             _parentForm.FormBorderStyle == FormBorderStyle.SizableToolWindow)
                         {
-                            _formIsActive = (int)m.WParam == 1;
+                            IsActive = (int)m.WParam == 1;
                             if (NcPaint(true))
                             {
                                 supressOriginalMessage = true;
@@ -478,14 +478,14 @@ namespace SkinFramework
             return false;
         }
 
-        private void CreateShadow()
+        private void CreateShadow(bool formActive = true)
         {
             if (_shadowForm != null)
             {
-                //RemoveShadow();
+                RemoveShadow();
             }
 
-            _shadowForm = _manager.CurrentSkin?.OnCreateShadow(_parentForm);
+            _shadowForm = _manager.CurrentSkin?.OnCreateShadow(_parentForm, formActive);
         }
 
         private void RemoveShadow()
@@ -738,7 +738,7 @@ namespace SkinFramework
                     {
                         Borders = borderSize,
                         CaptionHeight = captionHeight,
-                        Active = _formIsActive,
+                        Active = IsActive,
                         HasMenu = FormExtenders.HasMenu(_parentForm),
                         IconSize = SystemInformation.SmallIconSize,
                         IsSmallCaption =

@@ -9,7 +9,7 @@ namespace SkinFramework.DefaultSkins.VS2017.Shadows
 {
     public class FormGlowShadow : FormShadowBase
     {
-        public Color GlowColor { get; }
+        public Color GlowColor { get; set; }
 
         public int GlowBlur { get; } = 30;
         public int GlowSpread { get; } = 5;
@@ -95,7 +95,7 @@ namespace SkinFramework.DefaultSkins.VS2017.Shadows
 
         private Bitmap DrawBlurBorder()
         {
-            return (Bitmap)DrawOutsetShadow(0, 0, GlowBlur, GlowSpread, GlowColor, new Rectangle(1, 1, ClientRectangle.Width, ClientRectangle.Height));
+            return (Bitmap)DrawOutsetShadow(0, 0, GlowBlur, GlowSpread, GlowColor, new Rectangle(0, 0, ClientRectangle.Width, ClientRectangle.Height));
         }
 
         private Image DrawOutsetShadow(int hShadow, int vShadow, int blur, int spread, Color color, Rectangle shadowCanvasArea)

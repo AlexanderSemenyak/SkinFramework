@@ -149,6 +149,19 @@ namespace SkinFramework.DefaultSkins.VS2017.Shadows
                 PaintShadow();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            TargetForm.Activated -= OnTargetFormActivated;
+            TargetForm.ResizeBegin -= OnTargetFormResizeBegin;
+            TargetForm.ResizeEnd -= OnTargetFormResizeEnd;
+            TargetForm.VisibleChanged -= OnTargetFormVisibleChanged;
+            TargetForm.SizeChanged -= OnTargetFormSizeChanged;
+
+            TargetForm.Move -= OnTargetFormMove;
+            TargetForm.Resize -= OnTargetFormResize;
+            base.Dispose(disposing);
+        }
+
         #endregion
 
         #region Constants

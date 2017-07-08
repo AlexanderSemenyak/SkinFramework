@@ -32,7 +32,7 @@ namespace SkinFramework
         /// </summary>
         /// <param name="form">The form to check.</param>
         /// <returns></returns>
-        public static bool IsDrawMaximizeBox(Form form)
+        public static bool IsDrawMaximizeBox(this Form form)
         {
             return form.MaximizeBox && form.FormBorderStyle != FormBorderStyle.SizableToolWindow &&
                    form.FormBorderStyle != FormBorderStyle.FixedToolWindow;
@@ -43,7 +43,7 @@ namespace SkinFramework
         /// </summary>
         /// <param name="form">The form to check .</param>
         /// <returns></returns>
-        public static bool IsDrawMinimizeBox(Form form)
+        public static bool IsDrawMinimizeBox(this Form form)
         {
             return form.MinimizeBox && form.FormBorderStyle != FormBorderStyle.SizableToolWindow &&
                    form.FormBorderStyle != FormBorderStyle.FixedToolWindow;
@@ -54,7 +54,7 @@ namespace SkinFramework
         /// </summary>
         /// <param name="form">The form.</param>
         /// <returns></returns>
-        public static Size GetBorderSize(Form form)
+        public static Size GetBorderSize(this Form form)
         {
             var border = new Size(0, 0);
 
@@ -96,7 +96,7 @@ namespace SkinFramework
         /// </summary>
         /// <param name="form">The form.</param>
         /// <returns></returns>
-        public static Size GetCaptionButtonSize(Form form)
+        public static Size GetCaptionButtonSize(this Form form)
         {
             var buttonSize = form.FormBorderStyle != FormBorderStyle.SizableToolWindow &&
                              form.FormBorderStyle != FormBorderStyle.FixedToolWindow
@@ -112,7 +112,7 @@ namespace SkinFramework
         /// </summary>
         /// <param name="form">The form.</param>
         /// <returns></returns>
-        public static int GetCaptionHeight(Form form)
+        public static int GetCaptionHeight(this Form form)
         {
             return form.FormBorderStyle != FormBorderStyle.SizableToolWindow &&
                    form.FormBorderStyle != FormBorderStyle.FixedToolWindow
@@ -125,7 +125,7 @@ namespace SkinFramework
         /// </summary>
         /// <param name="form">The form.</param>
         /// <returns></returns>
-        public static bool HasMenu(Form form)
+        public static bool HasMenu(this Form form)
         {
             return form.FormBorderStyle == FormBorderStyle.Sizable || form.FormBorderStyle == FormBorderStyle.Fixed3D ||
                    form.FormBorderStyle == FormBorderStyle.FixedSingle;
@@ -136,7 +136,7 @@ namespace SkinFramework
         /// </summary>
         /// <param name="form">The form.</param>
         /// <returns></returns>
-        public static Rectangle GetScreenRect(Form form)
+        public static Rectangle GetScreenRect(this Form form)
         {
             return form.Parent != null ? form.Parent.RectangleToScreen(form.Bounds) : form.Bounds;
         }

@@ -292,6 +292,7 @@ namespace SkinFramework.DefaultSkins.VS2017
             //});
 
             paintData.Graphics.ResetClip();
+            
             return true;
         }
 
@@ -306,9 +307,9 @@ namespace SkinFramework.DefaultSkins.VS2017
 
         }
 
-        public override FormShadowBase OnCreateShadow(Form form)
+        public override FormShadowBase OnCreateShadow(Form form, bool formActive)
         {
-            var color = Form.ActiveForm == form ? Color.FromArgb(255, 0, 122, 204) : Color.FromArgb(255, 67, 67, 70);
+            var color = formActive ? Color.FromArgb(255, 0, 122, 204) : Color.FromArgb(255, 67, 67, 70);
             return new FormGlowShadow(form, color, 16, 64, 2);
         }
 

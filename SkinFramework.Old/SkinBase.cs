@@ -71,8 +71,8 @@ namespace SkinFramework
         /// <returns><code>true</code> if the original painting should be suppressed, otherwise <code>false</code></returns>
         public abstract bool OnNcPaint(Form form, SkinningFormPaintData paintData);
 
-
-        public virtual FormShadowBase OnCreateShadow(Form form)
+        
+        public virtual FormShadowBase OnCreateShadow(Form parentForm, bool formActive)
         {
             // No Shadow
             return null;
