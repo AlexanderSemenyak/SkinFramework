@@ -3,7 +3,7 @@ I hope to extend this framework to not only make it very simple to create custom
 
 # Chat / Development:
 
-[![Join the chat at https://gitter.im/TruDan/SkinFramework](https://badges.gitter.im/TruDan/SkinFramework.svg)](https://gitter.im/TruDan/SkinFramework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build status](https://ci.appveyor.com/api/projects/status/cmi121dpmigbp1du?svg=true)](https://ci.appveyor.com/project/TruDan/skinframework) [![Join the chat at https://gitter.im/TruDan/SkinFramework](https://badges.gitter.im/TruDan/SkinFramework.svg)](https://gitter.im/TruDan/SkinFramework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 # Introduction: 
