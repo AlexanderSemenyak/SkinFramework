@@ -212,7 +212,8 @@ namespace SkinFramework
         HTSYSMENU = 3,
         HTMINBUTTON = 8,
         HTMAXBUTTON = 9,
-        HTCLOSE = 20
+        HTCLOSE = 20,
+        HTHELP = 21
     }
 
     public enum RedrawWindowFlags

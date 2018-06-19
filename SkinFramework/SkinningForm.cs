@@ -35,7 +35,7 @@ namespace SkinFramework
         #region Properties
 
         /// <summary>
-        ///     Gets a value indicating whether whe should process the nc area.
+        ///     Gets a value indicating whether we should process the nc area.
         /// </summary>
         /// <value>
         ///     <c>true</c> if we should process the nc area; otherwise, <c>false</c>.
@@ -64,6 +64,8 @@ namespace SkinFramework
         private CaptionButton _pressedButton;
 
         private CaptionButton _hoveredButton;
+
+        // TODO: Add Disabled state to some buttons.
 
         private readonly SkinningManager _manager;
 
@@ -517,13 +519,18 @@ namespace SkinFramework
                 if (FormExtenders.IsDrawMaximizeBox(_parentForm))
                 {
                     var button = new CaptionButton(HitTest.HTMAXBUTTON);
+                    // disable button if it is disabled on form.
+                    button.Enabled = _parentForm.MaximizeBox;
                     _captionButtons.Add(button);
                 }
                 if (FormExtenders.IsDrawMinimizeBox(_parentForm))
                 {
                     var button = new CaptionButton(HitTest.HTMINBUTTON);
+                    // disable button if it is disabled on form.
+                    button.Enabled = _parentForm.MinimizeBox;
                     _captionButtons.Add(button);
                 }
+                // TODO: Add help button if enabled to all skins.
 
                 // add command handlers
                 foreach (var button in _captionButtons)
@@ -558,7 +565,7 @@ namespace SkinFramework
         private void OnCommandButtonPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             // if a button is hovered or pressed invalidate
-            if (e.PropertyName == "Pressed" || e.PropertyName == "Hovered")
+            if (e.PropertyName == "Pressed" || e.PropertyName == "Hovered" || e.PropertyName == "Enabled")
                 NcPaint(true);
         }
 
@@ -822,21 +829,30 @@ namespace SkinFramework
                             _parentForm.Close();
                             return true;
                         case HitTest.HTMAXBUTTON:
-                            if (_parentForm.WindowState == FormWindowState.Maximized)
+                            if (button.Enabled)
                             {
-                                _parentForm.WindowState = FormWindowState.Normal;
-                                _parentForm.Refresh();
-                            }
-                            else if (_parentForm.WindowState == FormWindowState.Normal ||
-                                     _parentForm.WindowState == FormWindowState.Minimized)
-                            {
-                                _parentForm.WindowState = FormWindowState.Maximized;
+                                if (_parentForm.WindowState == FormWindowState.Maximized)
+                                {
+                                    _parentForm.WindowState = FormWindowState.Normal;
+                                    _parentForm.Refresh();
+                                }
+                                else if (_parentForm.WindowState == FormWindowState.Normal ||
+                                        _parentForm.WindowState == FormWindowState.Minimized)
+                                {
+                                    _parentForm.WindowState = FormWindowState.Maximized;
+                                }
                             }
                             break;
                         case HitTest.HTMINBUTTON:
-                            _parentForm.WindowState = _parentForm.WindowState == FormWindowState.Minimized
-                                ? FormWindowState.Normal
-                                : FormWindowState.Minimized;
+                            if (button.Enabled)
+                            {
+                                _parentForm.WindowState = _parentForm.WindowState == FormWindowState.Minimized
+                                    ? FormWindowState.Normal
+                                    : FormWindowState.Minimized;
+                            }
+                            break;
+                        case HitTest.HTHELP:
+                            // TODO: Add Help button processing.
                             break;
                     }
 

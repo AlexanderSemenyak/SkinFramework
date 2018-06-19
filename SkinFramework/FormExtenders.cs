@@ -34,8 +34,14 @@ namespace SkinFramework
         /// <returns></returns>
         public static bool IsDrawMaximizeBox(Form form)
         {
+            MessageBox.Show((form.MinimizeBox == true && form.MaximizeBox == true).ToString(), "Debug!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show((form.MinimizeBox == true && form.MaximizeBox == false).ToString(), "Debug!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show((form.MinimizeBox == false && form.MaximizeBox == true).ToString(), "Debug!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return form.MaximizeBox && form.FormBorderStyle != FormBorderStyle.SizableToolWindow &&
-                   form.FormBorderStyle != FormBorderStyle.FixedToolWindow;
+                   form.FormBorderStyle != FormBorderStyle.FixedToolWindow &&
+                   ((form.MinimizeBox == true && form.MaximizeBox == true) ||
+                       (form.MinimizeBox == true && form.MaximizeBox == false) ||
+                       (form.MinimizeBox == false && form.MaximizeBox == true));
         }
 
         /// <summary>
@@ -45,8 +51,14 @@ namespace SkinFramework
         /// <returns></returns>
         public static bool IsDrawMinimizeBox(Form form)
         {
+            MessageBox.Show((form.MinimizeBox == true && form.MaximizeBox == true).ToString(), "Debug!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show((form.MinimizeBox == true && form.MaximizeBox == false).ToString(), "Debug!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show((form.MinimizeBox == false && form.MaximizeBox == true).ToString(), "Debug!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return form.MinimizeBox && form.FormBorderStyle != FormBorderStyle.SizableToolWindow &&
-                   form.FormBorderStyle != FormBorderStyle.FixedToolWindow;
+                   form.FormBorderStyle != FormBorderStyle.FixedToolWindow &&
+                   ((form.MinimizeBox == true && form.MaximizeBox == true) ||
+                       (form.MinimizeBox == true && form.MaximizeBox == false) ||
+                       (form.MinimizeBox == false && form.MaximizeBox == true));
         }
 
         /// <summary>
